@@ -40,11 +40,6 @@
 <TD><INPUT TYPE="email" NAME="EMAIL" ></TD>
 </TR>
 <TR VALIGN=TOP ALIGN=LEFT>
-<TD><B><I>Address:</I></B></TD>
-<TD><INPUT TYPE="text" NAME="ADDRESS" ></TD>
-</TR>
-</TABLE>
-<TR VALIGN=TOP ALIGN=LEFT>
 <TD><B><I>Phone Number:</I></B></TD>
 <TD><INPUT TYPE="tel" NAME="PHONE" ></TD>
 </TR>
