@@ -1,0 +1,13 @@
+<html>
+<body>
+<h1>391 Project</h1>
+<p>
+<ul>
+        <li>Ryan Hamacher</li>
+        <li>Henry Fok
+        <li>Zach Budinski
+        <li><a href = "login.html">Login Page</a></p></li>
+        <li><a href = sql_input.html">Execute SQL statements (admin only)</a></p></li>
+</ul>
+</body>
+</html>
