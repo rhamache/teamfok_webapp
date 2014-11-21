@@ -51,6 +51,26 @@
     </servlet-mapping>
     
     <servlet>
+        <servlet-name>GroupCreationServlet</servlet-name>
+        <servlet-class>security.GroupCreationServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GroupCreationServlet</servlet-name>
+        <url-pattern>/groupcreation.html</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>SingleGroupServlet</servlet-name>
+        <servlet-class>security.SingleGroupServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SingleGroupServlet</servlet-name>
+        <url-pattern>/groups/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
         <servlet-name>RegistrationServlet</servlet-name>
         <servlet-class>usermanagement.RegistrationServlet</servlet-class>
     </servlet>
