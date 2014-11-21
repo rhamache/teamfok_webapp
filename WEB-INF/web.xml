@@ -41,13 +41,13 @@
     </servlet-mapping>
    
    <servlet>
-        <servlet-name>RawSQLServlet</servlet-name>
-        <servlet-class>proj1.RawSQLServlet</servlet-class>
+        <servlet-name>GroupsServlet</servlet-name>
+        <servlet-class>security.GroupsServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>RawSQLServlet</servlet-name>
-        <url-pattern>/sql_input.html</url-pattern>
+        <servlet-name>GroupsServlet</servlet-name>
+        <url-pattern>/groups.html</url-pattern>
     </servlet-mapping>
     
     <servlet>
