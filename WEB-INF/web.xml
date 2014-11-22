@@ -90,6 +90,16 @@
         <url-pattern>/search.html</url-pattern>
     </servlet-mapping>
 
+   <servlet>
+        <servlet-name>UploadServlet</servlet-name>
+        <servlet-class>upload.UploadServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UploadServlet</servlet-name>
+        <url-pattern>/upload.html</url-pattern>
+    </servlet-mapping>
+
 
 
 </web-app>
