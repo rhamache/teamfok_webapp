@@ -48,11 +48,12 @@ public class HTMLBuilder
 		pw.println("<li><a href=\"/proj1\">Home</a></li>");
 		if (loggedIn)
 		{
-			pw.println("<li><a href=\"logout.html\">Logout</a></li>");
-			pw.println("<li><a href=\"search.html\">Search</a></li>");
-			pw.println("<li><a href=\"groups.html\">Groups</a></li>");
+			pw.println("<li><a href=\"/proj1/logout.html\">Logout</a></li>");
+			pw.println("<li><a href=\"/proj1/search.html\">Search</a></li>");
+			pw.println("<li><a href=\"/proj1/groups.html\">Groups</a></li>");
+			pw.println("<li><a href=\"/proj1/upload.html\">Upload</a></li>");
 		} else {
-			pw.println("<li><a href=\"login.html\">Login</a></li>");
+			pw.println("<li><a href=\"/proj1/login.html\">Login</a></li>");
 		}
 		pw.println("</ul>");
 		pw.println("<hr>");

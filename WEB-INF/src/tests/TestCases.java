@@ -22,7 +22,7 @@ public class TestCases {
 
 	public static void main(String[] args) {
 		
-		int total_tests = 6, tests_passed = 0;
+		int total_tests = 7, tests_passed = 0;
 		
 		tests_passed += TestCases.TestDBC();
 		
@@ -37,9 +37,34 @@ public class TestCases {
 		tests_passed += TestCases.TestIsMemberOf();
 		
 		tests_passed += TestCases.TestSearch();
-
+		
+		tests_passed += TestCases.TestGroupCreate();
 		
 		System.out.println("Tests passed: "+tests_passed+"/"+total_tests);
+	}
+	
+	public static int TestGroupCreate()
+	{
+		SecurityController sc = null;
+		
+		try
+		{
+			sc = new SecurityController();
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		try
+		{
+			sc.createGroup("test", "ZachB");
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 1;
+		
 	}
 	
 	public static int TestDBC() {
@@ -216,23 +241,10 @@ public class TestCases {
 		try
 		{
 			sc = new SecurityController();
-		} catch (SQLException e)
+		} catch (Exception e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ClassNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		
 		HttpSession sesh = new TestHttpSession();
 		sesh.setAttribute("username", username);
@@ -240,7 +252,7 @@ public class TestCases {
 		boolean rval = false;
 		try
 		{
-			rval = sc.isMemberOf(sesh, id);
+			rval = sc.isOwnerOf(sesh, id);
 		} catch (SQLException e)
 		{
 			// TODO Auto-generated catch block
