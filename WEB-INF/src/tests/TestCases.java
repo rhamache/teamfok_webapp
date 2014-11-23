@@ -37,13 +37,13 @@ public class TestCases {
 		
 		tests_passed += TestCases.TestRegistrationNewUser();
 		
-		tests_passed += TestCases.TestIsMemberOf();
+		tests_passed += TestCases.TestIsMemberOf();*/
 		
 		tests_passed += TestCases.TestSearch();
 		
-		tests_passed += TestCases.TestGroupCreate();*/
+		//tests_passed += TestCases.TestGroupCreate();
 		
-		tests_passed += TestCases.TestAddHit();
+		//tests_passed += TestCases.TestAddHit();
 		
 		System.out.println("Tests passed: "+tests_passed+"/"+total_tests);
 	}
@@ -326,7 +326,7 @@ public class TestCases {
 		int printed = 0;
 		try
 		{
-			printed = sc.SearchMain("Edmonton ach ZacHb zachb", "Most-Recent", "16-NOV-2014", "25-NOV-2014");
+			printed = sc.SearchMain("Edmonton ach ZacHb zachb", "Neither", "16-NOV-2014", "25-NOV-2014");
 		} catch (SQLException e1)
 		{
 			// TODO Auto-generated catch block

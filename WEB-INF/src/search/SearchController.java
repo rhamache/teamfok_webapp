@@ -1,24 +1,19 @@
 package search;
 
-import java.security.KeyStore.Entry;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import proj1.DatabaseController;
 import proj1.Photo;
-
+import proj1.PhotoSort;
 
 
 
@@ -64,16 +59,20 @@ public class SearchController extends DatabaseController
 				Statement stmt = null; ResultSet rset = null;
 	        	stmt = conn.createStatement();
 	        	rset = stmt.executeQuery(query);
+
 	        	while (rset.next())
-	        	{		if (!photoIDarr.contains(rset.getString(1)))
-	        				{
-	        				photoIDarr.add(Integer.parseInt(rset.getString(1)));
-	        				Photo photo = new Photo(Integer.parseInt(rset.getString(1)));
-	        				photoList.add(photo);
-	        				}
+	        	{			
+	        		boolean doesContain = photoIDarr.contains(new Integer(rset.getInt(1)));
+	        		if (!doesContain)
+	        		{	
+	        			photoIDarr.add(new Integer(rset.getInt(1)));
+	        			Photo photo = new Photo(new Integer(rset.getInt(1)));
+	        			photoList.add(photo);
+	        		}
 	        	}
 		        for (Photo photo : photoList)
-		        	{	Integer rank = 0;
+		        	{	
+		        		Integer rank = 0;
 		        		query = "select "+arg+" from IMAGES where  photo_id ='"+photo.id+"'"; //collect the argument from said photoID
 		        		stmt = conn.createStatement();
 		        		rset = stmt.executeQuery(query);
@@ -108,10 +107,14 @@ public class SearchController extends DatabaseController
 	        	}
 	        }
 		
+
 		
-		
-		Collections.sort(photoList, SEARCH_RANK);
-		
+		//Collections.sort(photoList, PhotoSort.SEARCH_RANK_REVERSE);
+		Collections.sort(photoList, Collections.reverseOrder());
+		for (Photo p : photoList){
+			System.out.print(p.id);
+			System.out.print('\t');
+			System.out.println(p.getRank());}
 		
 		return 1;
         } 
