@@ -17,7 +17,8 @@ public class Photo implements Comparable<Photo>
 	private String description;
 	private BLOB thumbnail;
 	private BLOB image;
-	private int rank;
+	private Integer rank;
+
 	
 	public Photo(int id)
 	{
@@ -143,22 +144,25 @@ public class Photo implements Comparable<Photo>
 		this.image = image;
 	}
 
-	@Override
+
 	public int compareTo(Photo p)
 	{
 		return this.getDate().compareTo(p.getDate());
 	}
-	
-	
-	
-	
-	public int getRank() {
+
+	public Integer getRank()
+	{
+
 		return rank;
 	}
 
-	public void setRank(int rank) {
+	public void setRank(Integer rank)
+	{
+
 		this.rank = rank;
 	}
+	
+
 	
 	
 }
