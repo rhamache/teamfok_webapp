@@ -18,7 +18,11 @@ import search.SearchController;
 
 public class SearchServlet extends HttpServlet
 {
-	  public void doGet(HttpServletRequest request, HttpServletResponse response)
+	  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
       {	  
 		  HTMLBuilder html = new HTMLBuilder();
@@ -53,7 +57,6 @@ public class SearchServlet extends HttpServlet
 		  String neither = request.getParameter("Neither");
 		  String from = request.getParameter("From");
 		  String to = request.getParameter("To");
-		  String timespace= from + '/' +to;
 		  String timebias = "";
 		  
 		  if ((mostrecent != "") || (mostrecent != null))
@@ -74,11 +77,11 @@ public class SearchServlet extends HttpServlet
 	    	  return;
 	      }
 	      HttpSession session = request.getSession(true);
-	      Set<String> results = null;
+	      int results = 0;
 	      try
 	      {
-	    	results = sbc.keywordsearch(keywords, timebias, timespace);
-	      } catch (SQLException e)
+	    	results = sbc.SearchMain(keywords, timebias, from, to);
+	      } catch (Exception e)
 	      {
 			out.println("Exception: "+e.getMessage());
 			return;

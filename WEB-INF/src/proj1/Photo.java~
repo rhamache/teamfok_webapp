@@ -18,9 +18,10 @@ public class Photo implements Comparable<Photo>
 	private BLOB thumbnail;
 	private BLOB image;
 	private Integer rank;
-	
-	
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3f44c5ea16d56983c3b79445630e46dd32ea192c
 	
 	public Photo(int id)
 	{
@@ -163,6 +164,11 @@ public class Photo implements Comparable<Photo>
 
 		this.rank = rank;
 	}
+<<<<<<< HEAD
+	
+
+=======
+>>>>>>> 3f44c5ea16d56983c3b79445630e46dd32ea192c
 	
 	
 }

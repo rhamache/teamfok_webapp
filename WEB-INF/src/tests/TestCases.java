@@ -2,6 +2,7 @@ package tests;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,13 +37,13 @@ public class TestCases {
 		
 		tests_passed += TestCases.TestRegistrationNewUser();
 		
-		tests_passed += TestCases.TestIsMemberOf();
+		tests_passed += TestCases.TestIsMemberOf();*/
 		
 		tests_passed += TestCases.TestSearch();
 		
-		tests_passed += TestCases.TestGroupCreate();*/
+		//tests_passed += TestCases.TestGroupCreate();
 		
-		tests_passed += TestCases.TestAddHit();
+		//tests_passed += TestCases.TestAddHit();
 		
 		System.out.println("Tests passed: "+tests_passed+"/"+total_tests);
 	}
@@ -322,14 +323,17 @@ public class TestCases {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		HashSet<String> printed = null;
+		int printed = 0;
 		try
 		{
-			printed = (HashSet<String>) sc.keywordsearch("Edmonton ach ZacHb zachb", null, null);
+			printed = sc.SearchMain("Edmonton ach ZacHb zachb", "Neither", "16-NOV-2014", "25-NOV-2014");
 		} catch (SQLException e1)
 		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (ParseException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
 		}
 		
 		try
@@ -340,9 +344,7 @@ public class TestCases {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for (String photoid : printed){
-			System.out.println("ID: "+photoid);	
-			}
+
 		return 1;
 	}
 }
