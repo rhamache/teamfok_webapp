@@ -18,7 +18,6 @@ public class Photo implements Comparable<Photo>
 	private BLOB thumbnail;
 	private BLOB image;
 	private Integer rank;
-
 	
 	public Photo(int id)
 	{
@@ -161,8 +160,6 @@ public class Photo implements Comparable<Photo>
 
 		this.rank = rank;
 	}
-	
-
 	
 	
 }
