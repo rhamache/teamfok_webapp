@@ -22,6 +22,7 @@ import org.apache.commons.fileupload.FileItem;
 
 import proj1.HTMLBuilder;
 import security.SecurityController;
+import upload.UploadController;
 
 public class UploadServlet extends HttpServlet
 {	
@@ -37,13 +38,58 @@ public class UploadServlet extends HttpServlet
 			HTMLBuilder html = new HTMLBuilder();
 			html.makeHeader();
 			html.makeMenu(true);
+			ArrayList<Integer> userGroups = new ArrayList<Integer>();
+			UploadController udbc = null;
+			try
+			{
+				udbc = new UploadController();
+			} catch (SQLException e1)
+			{
+				e1.printStackTrace();
+			} catch (ClassNotFoundException e1)
+			{
+				e1.printStackTrace();
+			} catch (InstantiationException e1)
+			{
+				e1.printStackTrace();
+			} catch (IllegalAccessException e1)
+			{
+				e1.printStackTrace();
+			}
+			SecurityController sdbc = null;
+			try
+			{
+				sdbc = new SecurityController();
+			} catch (SQLException e1)
+			{
+				e1.printStackTrace();
+			} catch (ClassNotFoundException e1)
+			{
+				e1.printStackTrace();
+			} catch (InstantiationException e1)
+			{
+				e1.printStackTrace();
+			} catch (IllegalAccessException e1)
+			{
+				e1.printStackTrace();
+			}
 			
 			ServletContext context = getServletContext();
 			String path = context.getRealPath("/html/upload.html");
-			
 			html.buildFromFile(path);
+			String uname = request.getSession().getAttribute("username").toString();
 			
-			html.appendHTML("<a href = \"/proj1/display/myphotos\">My uploaded photos</a>");
+			try
+			{
+				userGroups = udbc.gatherGroups(uname);
+			} catch (SQLException e)
+			{
+				e.printStackTrace();
+				html.appendHTML("udbc exception");
+			}
+			
+
+
 			html.makeFooter();
 			html.putInResponse(response);
 		}
@@ -56,8 +102,7 @@ public class UploadServlet extends HttpServlet
 		String subject = null;
 		String place = null;
 		String description = null;
-		
-		
+		String privacy = null;
 		
 		HTMLBuilder html = new HTMLBuilder();
 		html.makeHeader();
@@ -105,6 +150,8 @@ public class UploadServlet extends HttpServlet
 		            	place = item.getString();
 		            if (item.getFieldName().equals("DES"))
 		            	description = item.getString();
+		            if (item.getFieldName().equals("privacy"))
+		            	privacy = item.getString();
 		        } else if (item.getFieldName().equals("FILEP"))
 		        {
 		        	instream = item.getInputStream();
@@ -129,7 +176,7 @@ public class UploadServlet extends HttpServlet
        
             ArrayList<String> infoBundle = new ArrayList<String>();
             infoBundle.add(request.getSession().getAttribute("username").toString());
-            infoBundle.add("1");
+            infoBundle.add(privacy);
             infoBundle.add(subject);
             infoBundle.add(place);
             infoBundle.add(description);        

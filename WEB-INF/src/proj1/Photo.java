@@ -17,6 +17,7 @@ public class Photo implements Comparable<Photo>
 	private String description;
 	private BLOB thumbnail;
 	private BLOB image;
+	private Integer rank;
 	
 	public Photo(int id)
 	{
@@ -29,6 +30,7 @@ public class Photo implements Comparable<Photo>
 		this.setDescription(null);
 		this.setThumbnail(null);
 		this.setImage(null);
+		this.setRank(0);
 	}
 	
 	public Photo(int id, String own, int perm, String sub, String pla, java.sql.Date date, String des, BLOB tmb, BLOB pic)
@@ -42,6 +44,7 @@ public class Photo implements Comparable<Photo>
 		this.setDescription(des);
 		this.setImage(pic);
 		this.setThumbnail(tmb);
+		this.setRank(0);
 	}
 
 
@@ -144,6 +147,18 @@ public class Photo implements Comparable<Photo>
 	public int compareTo(Photo p)
 	{
 		return this.getDate().compareTo(p.getDate());
+	}
+
+	public Integer getRank()
+	{
+
+		return rank;
+	}
+
+	public void setRank(Integer rank)
+	{
+
+		this.rank = rank;
 	}
 	
 	
