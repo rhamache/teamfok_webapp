@@ -2,6 +2,7 @@ package tests;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -301,14 +302,17 @@ public class TestCases {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		HashSet<String> printed = null;
+		int printed = 0;
 		try
 		{
-			printed = (HashSet<String>) sc.keywordsearch("Edmonton ach ZacHb zachb", null, null);
+			printed = sc.SearchMain("Edmonton ach ZacHb zachb", "Most-Recent", "16-NOV-2014", "25-NOV-2014");
 		} catch (SQLException e1)
 		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (ParseException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
 		}
 		
 		try
@@ -319,9 +323,7 @@ public class TestCases {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for (String photoid : printed){
-			System.out.println("ID: "+photoid);	
-			}
+
 		return 1;
 	}
 }
