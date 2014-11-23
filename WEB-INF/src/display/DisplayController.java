@@ -112,17 +112,45 @@ public class DisplayController extends DatabaseController
 		return photos;
 		
 	}
+	public ArrayList<Photo> getOwnedPhotos(String username) throws SQLException
+	{
+		String query = "SELECT * FROM images WHERE owner_name = '"+username+"'";
+		Statement stmt = null; ResultSet rset = null;
+		stmt = conn.createStatement();
+		
+		rset = stmt.executeQuery(query);
+		ArrayList<Photo> photos = new ArrayList<Photo>();
+		
+		while (rset != null && rset.next())
+		{
+			photos.add(new Photo(rset.getInt(1), rset.getString(2), rset.getInt(3), 
+								rset.getString(4), rset.getString(5), rset.getDate(6), 
+								rset.getString(7), ((OracleResultSet) rset).getBLOB(8), ((OracleResultSet) rset).getBLOB(9)) );
+		}
+		
+		return photos;
+		
+	}
 
-	public String createHTML(ArrayList<Photo> photos, int start)
+	public String createHTML(ArrayList<Photo> photos, int start, String username)
 	{
 		StringWriter html = new StringWriter();
 		PrintWriter pw = new PrintWriter(html);
 		
 		int i;
 		pw.println("<table border =\"1\">");
-		for (i = start; (i < photos.size() && i < 50); i++)
+		for (i = start; (i < photos.size() && i < (start+10)); i++)
 		{
 			Photo p = photos.get(i);
+			int hits;
+			try
+			{
+				hits = getNumberOfHits(p.id);
+			} catch (SQLException e)
+			{
+				pw.println(e.getMessage());
+				return html.getBuffer().toString();
+			}
             pw.println("<tr><td style = \"min-width:300px;height:300px\"><a href=\"/proj1/display/getpic?"+p.id+"\">");
             pw.println("<img src=\"/proj1/display/getpic?tmb"+p.id +"\"></a></td>");
             pw.println("<td style = \"min-width:600px;height:300px\"><p>");
@@ -131,12 +159,36 @@ public class DisplayController extends DatabaseController
             pw.println("<b>Place:</b> "+p.getPlace());
             pw.println("<b>Date:</b> "+p.getDate().toString());
             pw.println("<b>Description:</b> "+p.getDescription());
+            pw.println("<b>Unique hits:</b> "+hits);
+            if (p.getOwnerName().equals(username))
+            {
+            	pw.println("<b><a href = \"/proj1/display/delete?"+p.id+"\">Delete</a></b> ");
+            }
             pw.println("</p></td></tr>");
 		}
 		pw.println("</table>");
 		
 		return html.getBuffer().toString();
 		
+	}
+	
+	
+	public int getNumberOfHits(int id) throws SQLException
+	{
+		String query = "SELECT uniq_hits FROM hitcounts WHERE photo_id = "+id;
+		Statement stmt = null; ResultSet rset = null;
+		
+		stmt = conn.createStatement();
+		rset = stmt.executeQuery(query);
+		
+		int hits = 0;
+		while(rset != null && rset.next())
+		{
+			hits = rset.getInt(1);
+		}
+		
+		
+		return hits;
 	}
 	
 	public ArrayList<Photo> getFiveMostPopularPhotos() throws SQLException
@@ -236,14 +288,13 @@ public class DisplayController extends DatabaseController
 		{
 			count = rset.getInt(1);
 		}
-		
 		if (count > 0)
+			// hit is not unique
 			return;
 		else
 		{
 			String sql = "INSERT INTO hits VALUES('"+user+"', "+picid+")";
 			String query2 = "SELECT uniq_hits FROM hitcounts WHERE photo_id = "+picid;
-			
 			// get current hits
 			rset = stmt.executeQuery(query2);
 			count = 0;
@@ -251,7 +302,6 @@ public class DisplayController extends DatabaseController
 			{
 				count = rset.getInt(1);
 			}
-			
 			String sql2;
 			if (count == 0)
 				sql2 = "INSERT INTO hitcounts VALUES("+picid+", 1)";
@@ -260,7 +310,7 @@ public class DisplayController extends DatabaseController
 				count++;
 				sql2 = "UPDATE hitcounts SET uniq_hits = "+count+" WHERE photo_id = "+picid;
 			}
-			
+
 			stmt.executeUpdate(sql);
 			stmt.executeUpdate(sql2);
 			stmt.executeUpdate("COMMIT");

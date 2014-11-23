@@ -119,6 +119,26 @@
         <servlet-name>DisplayOneServlet</servlet-name>
         <url-pattern>/display/getpic</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>MyPhotosServlet</servlet-name>
+        <servlet-class>upload.MyPhotosServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MyPhotosServlet</servlet-name>
+        <url-pattern>/display/myphotos</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeletePhotoServlet</servlet-name>
+        <servlet-class>upload.DeletePhotoServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DeletePhotoServlet</servlet-name>
+        <url-pattern>/display/delete</url-pattern>
+    </servlet-mapping>
 
 
 

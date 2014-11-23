@@ -9,6 +9,8 @@ import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import display.DisplayController;
+
 import proj1.DatabaseController;
 import proj1.HTMLBuilder;
 import proj1.HomePageServlet;
@@ -24,7 +26,7 @@ public class TestCases {
 		
 		int total_tests = 7, tests_passed = 0;
 		
-		tests_passed += TestCases.TestDBC();
+		/*tests_passed += TestCases.TestDBC();
 		
 		tests_passed += TestCases.TestLoginPost();
 		
@@ -38,9 +40,28 @@ public class TestCases {
 		
 		tests_passed += TestCases.TestSearch();
 		
-		tests_passed += TestCases.TestGroupCreate();
+		tests_passed += TestCases.TestGroupCreate();*/
+		
+		tests_passed += TestCases.TestAddHit();
 		
 		System.out.println("Tests passed: "+tests_passed+"/"+total_tests);
+	}
+	public static int TestAddHit()
+	{
+		DisplayController dc = null;
+		
+		try{
+			dc = new DisplayController();
+			dc.addHit("admin", 51);
+			dc.close();
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			return 0;
+		}
+		
+		
+		return 1;
 	}
 	
 	public static int TestGroupCreate()

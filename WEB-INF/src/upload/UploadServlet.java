@@ -43,6 +43,7 @@ public class UploadServlet extends HttpServlet
 			
 			html.buildFromFile(path);
 			
+			html.appendHTML("<a href = \"/proj1/display/myphotos\">My uploaded photos</a>");
 			html.makeFooter();
 			html.putInResponse(response);
 		}

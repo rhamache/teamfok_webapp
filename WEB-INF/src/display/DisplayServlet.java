@@ -38,6 +38,7 @@ public class DisplayServlet extends HttpServlet
 		}
 		
 		html.makeMenu(true);
+		String user = request.getSession().getAttribute("username").toString();
 		
 		DisplayController dc = null;
 		
@@ -47,6 +48,8 @@ public class DisplayServlet extends HttpServlet
 		} catch (Exception e)
 		{
 			html.appendHTML(e.getMessage());
+			html.putInResponse(response);
+			return;
 		}
 		
 		ArrayList<Photo> photos_to_disp = new ArrayList<Photo>();
@@ -54,7 +57,7 @@ public class DisplayServlet extends HttpServlet
 		
 		try
 		{
-			photos_to_disp = dc.getPhotos(request.getSession().getAttribute("username").toString());
+			photos_to_disp = dc.getPhotos(user);
 		} catch (SQLException e)
 		{
 			e.printStackTrace();
@@ -69,13 +72,13 @@ public class DisplayServlet extends HttpServlet
 		}
 		
 		html.appendHTML("<h1>Most Popular Photos</h1>");
-		html.appendHTML(dc.createHTML(pop_photos, 0));
+		html.appendHTML(dc.createHTML(pop_photos, 0, user));
 		
 		
 		
 		Collections.sort(photos_to_disp, Collections.reverseOrder());
 		html.appendHTML("<h1>Latest Photos (10 per page)</h1>");
-		html.appendHTML(dc.createHTML(photos_to_disp, page*10));
+		html.appendHTML(dc.createHTML(photos_to_disp, page*10, user));
 		
 		
 		try
@@ -85,12 +88,12 @@ public class DisplayServlet extends HttpServlet
 		{
 			html.appendHTML(e.getMessage());
 		}
-		if ( (page) * 10 < 0)
+		if ( (page) * 10 > 0)
 		{
 			html.appendHTML("<a href=\"display?"+(page-1)+"\">Previous Page</a>");
 		}
 		
-		if ( (page+1) * 10 > photos_to_disp.size())
+		if ( (page+1) * 10 < photos_to_disp.size())
 		{
 			html.appendHTML("<a href=\"display?"+(page+1)+"\">Next Page</a>");
 		}

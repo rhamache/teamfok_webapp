@@ -124,6 +124,20 @@ public class UploadController extends DatabaseController
 		
 		return thumbnail;
     }
+	
+	public void deletePhoto(int id) throws SQLException
+	{
+		String sql = "DELETE FROM images WHERE photo_id = "+id;
+		String sql2 = "DELETE FROM hits WHERE photo_id = "+id;
+		String sql3 = "DELETE FROM hitcounts WHERE photo_id = "+id;
+		Statement stmt = null; 
+		stmt = conn.createStatement();
+		
+		stmt.executeUpdate(sql3);
+		stmt.executeUpdate(sql2);
+		stmt.executeUpdate(sql);
+		stmt.executeUpdate("COMMIT");
+	}
 
 }
 
