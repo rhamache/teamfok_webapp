@@ -132,6 +132,14 @@ public class DisplayController extends DatabaseController
 		
 	}
 
+	
+	/** Creates HTML to display photos (max ten per page)
+	 * 
+	 * @param photos - list containing the photos you want to display
+	 * @param start - starting index to display (for pagination of results)
+	 * @param username - Currently logged in user
+	 * @return String containing valid HTML (must be but in HttpResponse via print writer or HTMLBuilder)
+	 */
 	public String createHTML(ArrayList<Photo> photos, int start, String username)
 	{
 		StringWriter html = new StringWriter();

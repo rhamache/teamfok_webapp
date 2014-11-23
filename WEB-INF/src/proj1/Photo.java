@@ -19,6 +19,9 @@ public class Photo implements Comparable<Photo>
 	private BLOB image;
 	private Integer rank;
 	
+	
+
+	
 	public Photo(int id)
 	{
 		this.id = id;
