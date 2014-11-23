@@ -1,22 +1,20 @@
 package upload;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
 import javax.imageio.ImageIO;
 
 import oracle.jdbc.OracleResultSet;
 import oracle.sql.BLOB;
 import proj1.DatabaseController;
+import proj1.Photo;
 
 public class UploadController extends DatabaseController
 {
@@ -56,14 +54,16 @@ public class UploadController extends DatabaseController
 	public void writeBlob(int id, ArrayList<String> bundle, InputStream instr) throws SQLException, IOException
 	{
 	    BufferedImage img = ImageIO.read(instr);
-	    BufferedImage thumbNail = shrink(img, 10);
+	    BufferedImage thumbNail = shrink(img);
 		
 		String sql = "INSERT INTO images VALUES("+id+", '" + bundle.get(0)+"', "+Integer.parseInt(bundle.get(1))+", '"+bundle.get(2)+"', '"+bundle.get(3)+"', sysdate, '"+bundle.get(4)+"',empty_blob(),empty_blob())";
 		String query = "SELECT * FROM images WHERE photo_id = "+id+" FOR UPDATE";
+		String sql2 = "INSERT INTO hitcounts VALUES("+id+", 0)";
 		Statement stmt = null; ResultSet rset = null;
 
 		stmt = conn.createStatement();
 		stmt.executeUpdate(sql);
+		stmt.executeUpdate(sql2);
 		stmt.executeUpdate("COMMIT");
 		rset = stmt.executeQuery(query);
 		rset.next();
@@ -82,19 +82,47 @@ public class UploadController extends DatabaseController
 	}
 
 	
-	public static BufferedImage shrink(BufferedImage image, int n) {
+	public static BufferedImage shrink(BufferedImage image) {
 
-        int w = image.getWidth() / n;
-        int h = image.getHeight() / n;
-
-        BufferedImage shrunkImage =
-            new BufferedImage(w, h, image.getType());
-
-        for (int y=0; y < h; ++y)
-            for (int x=0; x < w; ++x)
-                shrunkImage.setRGB(x, y, image.getRGB(x*n, y*n));
-
-        return shrunkImage;
+		BufferedImage bigtmb;
+		int size, diff, wstart = 0, hstart = 0;
+		if (image.getHeight() > image.getWidth())
+		{
+			size = image.getHeight();
+			diff = size - image.getWidth();
+			wstart = diff/2;
+			bigtmb = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+		} else
+		{
+			size = image.getWidth();
+			diff = size - image.getHeight();
+			hstart = diff/2;
+			bigtmb = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+		}
+		
+		int i,j;
+		for (i = 0; i < bigtmb.getHeight(); i++)
+			for(j = 0; j < bigtmb.getWidth(); j++)
+				bigtmb.setRGB(j, i, 0);
+		
+		int _w = 0, _h = 0;
+		for (int w=wstart; w < size; ++w)
+		{
+			_h = 0;
+			for (int h=hstart; h < size; ++h)
+			{
+				if (_w < image.getWidth() && _h < image.getHeight())
+					bigtmb.setRGB(w, h, image.getRGB(_w, _h));
+				_h++;
+			}
+			_w++;
+		}
+		
+		BufferedImage thumbnail = new BufferedImage(300, 300, BufferedImage.TYPE_INT_RGB);
+		Image scaled = bigtmb.getScaledInstance(300, 300, Image.SCALE_FAST);
+		thumbnail.createGraphics().drawImage(scaled, 0, 0, null);
+		
+		return thumbnail;
     }
 
 }
