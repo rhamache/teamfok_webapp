@@ -37,7 +37,7 @@ public class UploadServlet extends HttpServlet
 		} else {
 			HTMLBuilder html = new HTMLBuilder();
 			html.makeHeader();
-			html.makeMenu(true);
+			html.makeMenu(request.getSession());
 			ArrayList<Integer> userGroups = new ArrayList<Integer>();
 			UploadController udbc = null;
 			try
@@ -109,14 +109,14 @@ public class UploadServlet extends HttpServlet
 		
 		if (!SecurityController.isLoggedIn(request.getSession()))
 		{
-			html.makeMenu(false);
+			html.makeMenu(request.getSession());
 			html.appendHTML("Can't upload an image if not logged in.");
 			html.makeFooter();
 			html.putInResponse(response);
 			return;
 		}
 		
-		html.makeMenu(true);
+		html.makeMenu(request.getSession());
 
 		UploadController udbc = null;
 		int pic_id;

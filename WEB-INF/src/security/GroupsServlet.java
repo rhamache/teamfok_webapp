@@ -27,7 +27,7 @@ public class GroupsServlet extends HttpServlet
 		
 		if(SecurityController.isLoggedIn(request.getSession()))
 		{
-			html.makeMenu(true);
+			html.makeMenu(request.getSession());
 			ServletContext context = getServletContext();
 			String path = context.getRealPath("/html/groups.html");
 			
@@ -78,7 +78,7 @@ public class GroupsServlet extends HttpServlet
 		}
 		else
 		{
-			html.makeMenu(false);
+			html.makeMenu(request.getSession());
 			html.appendHTML("You must <a href = \"login.html\">login</a> to access this page.");
 		}
 		
@@ -95,7 +95,7 @@ public class GroupsServlet extends HttpServlet
 		
 		if(SecurityController.isLoggedIn(request.getSession()))
 		{
-			html.makeMenu(true);
+			html.makeMenu(request.getSession());
 			ServletContext context = getServletContext();
 			String path = context.getRealPath("/html/groups.html");
 			
@@ -168,7 +168,7 @@ public class GroupsServlet extends HttpServlet
 		}
 		else
 		{
-			html.makeMenu(false);
+			html.makeMenu(request.getSession());
 			html.appendHTML("You must <a href = \"login.html\">login</a> to access this page.");
 		}
 		

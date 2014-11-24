@@ -146,7 +146,7 @@ public class Photo implements Comparable<Photo>
 		this.image = image;
 	}
 
-
+	@Override
 	public int compareTo(Photo p)
 	{
 		return this.getDate().compareTo(p.getDate());

@@ -30,14 +30,14 @@ public class DisplayServlet extends HttpServlet
 		
 		if (!SecurityController.isLoggedIn(request.getSession())) 
 		{
-			html.makeMenu(false);
+			html.makeMenu(request.getSession());
 			html.appendHTML("Please <a href = \"/proj1/login.html\">login</a> to view photos.");
 			html.makeFooter();
 			html.putInResponse(response);
 			return;
 		}
 		
-		html.makeMenu(true);
+		html.makeMenu(request.getSession());
 		String user = request.getSession().getAttribute("username").toString();
 		
 		DisplayController dc = null;

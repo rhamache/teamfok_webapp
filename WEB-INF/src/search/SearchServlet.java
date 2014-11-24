@@ -32,12 +32,12 @@ public class SearchServlet extends HttpServlet
 		  		html.makeHeader();
 		  		if (!SecurityController.isLoggedIn(request.getSession())) 
 		  		{
-		  			html.makeMenu(false);
+		  			html.makeMenu(request.getSession());
 		  			html.appendHTML("You are not logged in");
 		  		}
 		  		else
 		  		{
-		  			html.makeMenu(true);
+		  			html.makeMenu(request.getSession());
 			  
 		  			ServletContext context = getServletContext();
 		  			String path = context.getRealPath("/html/search.html");
@@ -57,13 +57,13 @@ public class SearchServlet extends HttpServlet
 		  			
 		  			if (!SecurityController.isLoggedIn(request.getSession())) 
 		  			{
-		  				html.makeMenu(false);
+		  				html.makeMenu(request.getSession());
 		  				html.appendHTML("You are not logged in");
 		  				html.makeFooter();
 		  				html.putInResponse(response);
 		  				return;
 		  			}
-		  			html.makeMenu(true);
+		  			html.makeMenu(request.getSession());
 		  
 		  			String user = request.getSession().getAttribute("username").toString();
 		  			PrintWriter out = response.getWriter();

@@ -31,6 +31,14 @@ public class SecurityController extends DatabaseController
 		  }
 	}
 	
+	public static boolean isAdmin(HttpSession sesh)
+	{
+		  if (sesh.getAttribute("username").toString().equals("admin")) {
+			  return true;
+		  } else {
+			  return false;
+		  }
+	}
 	public boolean isOwnerOf(HttpSession sesh, int groupID) throws SQLException
 	{
 		if (!SecurityController.isLoggedIn(sesh))
@@ -194,7 +202,6 @@ public class SecurityController extends DatabaseController
 		stmt.executeUpdate("COMMIT");
 	}
 	
-	
 	public boolean userAllowedView(int permission, String username, String owner){
 
 		if (permission == 1)
@@ -223,6 +230,4 @@ public class SecurityController extends DatabaseController
 		return false;
 		
 	}
-
-	
 }

@@ -24,14 +24,14 @@ public class GroupCreationServlet extends HttpServlet
 		html.makeHeader();
 		if (!SecurityController.isLoggedIn(request.getSession()))
 		{
-			html.makeMenu(false);
+			html.makeMenu(request.getSession());
 			html.appendHTML("Can't create a group if not logged in.");
 			html.makeFooter();
 			html.putInResponse(response);
 			return;
 		}
 		
-		html.makeMenu(true);
+		html.makeMenu(request.getSession());
 		ServletContext context = getServletContext();
 		String path = context.getRealPath("/html/groupcreation.html");
 		html.buildFromFile(path);
@@ -46,14 +46,14 @@ public class GroupCreationServlet extends HttpServlet
 		html.makeHeader();
 		if (!SecurityController.isLoggedIn(request.getSession()))
 		{
-			html.makeMenu(false);
+			html.makeMenu(request.getSession());
 			html.appendHTML("Can't create a group if not logged in.");
 			html.makeFooter();
 			html.putInResponse(response);
 			return;
 		}
 		
-		html.makeMenu(true);
+		html.makeMenu(request.getSession());
 		
 		SecurityController sc = null;
 		String gname = request.getParameter("GNAME");

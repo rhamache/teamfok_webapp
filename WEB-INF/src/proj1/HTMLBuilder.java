@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import security.SecurityController;
 
 public class HTMLBuilder
 {
@@ -35,7 +38,7 @@ public class HTMLBuilder
 		pw.println("<!DOCTYPE html>" + "<html><p>"+text+"</p>");
 	}
 	
-	public void makeMenu(boolean loggedIn) {
+	public void makeMenu(HttpSession sesh) {
 		pw.println("<style>");
 		pw.println("ul {");
 		pw.println("list-style-type: none;");
@@ -46,13 +49,17 @@ public class HTMLBuilder
 		pw.println("</head>");
 		pw.println("<ul>");
 		pw.println("<li><a href=\"/proj1\">Home</a></li>");
-		if (loggedIn)
+		if (SecurityController.isLoggedIn(sesh))
 		{
 			pw.println("<li><a href=\"/proj1/logout.html\">Logout</a></li>");
 			pw.println("<li><a href=\"/proj1/search.html\">Search</a></li>");
 			pw.println("<li><a href=\"/proj1/groups.html\">Groups</a></li>");
 			pw.println("<li><a href=\"/proj1/upload.html\">Upload</a></li>");
 			pw.println("<li><a href=\"/proj1/display?0\">Display</a></li>");
+			if (SecurityController.isAdmin(sesh))
+			{
+				pw.println("<li><a href=\"/proj1/analysis.html\">Data Analysis</a></li>");
+			}	
 		} else {
 			pw.println("<li><a href=\"/proj1/login.html\">Login</a></li>");
 		}
@@ -96,9 +103,9 @@ public class HTMLBuilder
 		
 	}
 	
-	public void buildCompleteFromFile(String path, boolean loggedIn) {
+	public void buildCompleteFromFile(String path, HttpSession sesh) {
 		this.makeHeader();
-		this.makeMenu(loggedIn);
+		this.makeMenu(sesh);
 		try
 		{
 			this.buildFromFile(path);

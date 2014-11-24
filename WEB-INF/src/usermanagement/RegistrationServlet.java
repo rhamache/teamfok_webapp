@@ -32,7 +32,7 @@ public class RegistrationServlet extends HttpServlet
 			  ServletContext context = getServletContext();
 			  String path = context.getRealPath("/html/registration.html");
 			  
-			  html.makeMenu(false);
+			  html.makeMenu(request.getSession());
 			  html.buildFromFile(path);
 		  } else {
 			  html.appendHTML("<h2>You are already logged in, "+request.getSession().getAttribute("username")+"</h2>");
@@ -51,7 +51,7 @@ public class RegistrationServlet extends HttpServlet
 		  if (SecurityController.isLoggedIn(request.getSession()))
 		  {
 			  html.makeHeader();
-			  html.makeMenu(true);
+			  html.makeMenu(request.getSession());
 			  html.appendHTML("You can't register a new account while logged in. Logout first.");
 			  html.makeFooter();
 			  html.putInResponse(response);
@@ -109,7 +109,7 @@ public class RegistrationServlet extends HttpServlet
 			  ServletContext context = getServletContext();
 			  String path = context.getRealPath("/html/registration.html");
 			  html.makeHeader();
-			  html.makeMenu(false);
+			  html.makeMenu(request.getSession());
 			  html.appendHTML(rc.getFieldError());
 			  html.buildFromFile(path);
 			  html.putInResponse(response);

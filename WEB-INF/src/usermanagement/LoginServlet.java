@@ -25,10 +25,10 @@ public class LoginServlet extends HttpServlet
 			  ServletContext context = getServletContext();
 			  String path = context.getRealPath("/html/login.html");
 			  
-			  html.buildCompleteFromFile(path, false);
+			  html.buildCompleteFromFile(path, request.getSession());
 		  } else {
 			  html.makeHeader();
-			  html.makeMenu(true);
+			  html.makeMenu(request.getSession());
 			  html.appendHTML("<h2>You are already logged in, "+request.getSession().getAttribute("username")+"</h2>");
 			  html.appendHTML("<p>Want to logout? Click <a href = \"/html/logout.html\">here.</a></p>");
 			  html.makeFooter();

@@ -23,7 +23,7 @@ public class DeletePhotoServlet extends HttpServlet
 		
 		if (!SecurityController.isLoggedIn(request.getSession()))
 		{
-			html.makeMenu(false);
+			html.makeMenu(request.getSession());
 			html.appendHTML("Error: not logged in.");
 			html.makeFooter();
 			html.putInResponse(response);

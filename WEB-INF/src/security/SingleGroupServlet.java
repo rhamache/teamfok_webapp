@@ -22,7 +22,7 @@ public class SingleGroupServlet extends HttpServlet
 	{
 		HTMLBuilder html = new HTMLBuilder();
 		html.makeHeader();
-		html.makeMenu(SecurityController.isLoggedIn(request.getSession()));
+		html.makeMenu(request.getSession());
 		
         String[] pathInfo = request.getPathInfo().split("/");
 
@@ -45,7 +45,7 @@ public class SingleGroupServlet extends HttpServlet
 	{
 		HTMLBuilder html = new HTMLBuilder();
 		html.makeHeader();
-		html.makeMenu(SecurityController.isLoggedIn(request.getSession()));
+		html.makeMenu(request.getSession());
 		
         String[] pathInfo = request.getPathInfo().split("/");
 

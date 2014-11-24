@@ -21,7 +21,7 @@ public class LogoutServlet extends HttpServlet
 		      {
 		  			HTMLBuilder html = new HTMLBuilder();
 	  				html.makeHeader();
-	  				html.makeMenu(false);
+	  				html.makeMenu(request.getSession());
 		  			
 		  			if(SecurityController.isLoggedIn(request.getSession()))
 		  			{

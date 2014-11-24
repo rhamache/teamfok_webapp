@@ -24,9 +24,9 @@ public class HomePageServlet extends HttpServlet
 		  			if (SecurityController.isLoggedIn(request.getSession()))
 		  			{
 		  				html.appendHTML("Welcome "+request.getSession().getAttribute("username")+"!");
-		  				html.makeMenu(true);
+		  				html.makeMenu(request.getSession());
 		  			} else {
-		  				html.makeMenu(false);
+		  				html.makeMenu(request.getSession());
 		  			}
 		  			
 		  			html.makeFooter();

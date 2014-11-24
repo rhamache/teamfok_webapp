@@ -29,14 +29,14 @@ public class MyPhotosServlet extends HttpServlet
 		
 		if (!SecurityController.isLoggedIn(request.getSession()))
 		{
-			html.makeMenu(false);
+			html.makeMenu(request.getSession());
 			html.appendHTML("Error: not logged in.");
 			html.makeFooter();
 			html.putInResponse(response);
 			return;
 		}
 		
-		html.makeMenu(true);
+		html.makeMenu(request.getSession());
 		String user = request.getSession().getAttribute("username").toString();
 		
 		DisplayController dc = null;
