@@ -208,15 +208,7 @@ public class SecurityController extends DatabaseController
 			return true;
 		if (owner == username)
 			return true;
-		Map <Integer,String> groups = null;
-		try {
-			groups = new HashMap<Integer, String>(getGroupsOwnedBy(username));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (groups.containsKey(permission))
-			return true;
+
 		List <String> members = null;
 		try {
 			members = new ArrayList<String>(getMembersOf(permission));

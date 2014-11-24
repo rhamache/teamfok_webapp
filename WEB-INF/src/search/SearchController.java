@@ -42,13 +42,13 @@ public class SearchController extends DatabaseController
 			for (String arg : photoargs)				//For each argument we will have to iterate
 			{	
 				String query = null;
-				if ((to != null || !to.isEmpty()) && (from!= null || !from.isEmpty())){
+				if (!to.isEmpty() && !from.isEmpty()){
 					query = "select photo_id from IMAGES where timing >= '"+from+"' AND timing <= '"+to+"' AND lower("+arg+") LIKE '%"+keyword+"%'";}
-				if ((to != null || !to.isEmpty()) && (from == null || from.isEmpty()))
+				if (!to.isEmpty() && from.isEmpty())
 						query = "select photo_id from IMAGES where timing <= "+to+" AND lower("+arg+") LIKE '%"+keyword+"%'";
-				if ((to == null || to.isEmpty()) && (from != null || !from.isEmpty()))
+				if (to.isEmpty() && !from.isEmpty())
 					query = "select photo_id from IMAGES where timing >= '"+from+"' AND lower("+arg+") LIKE '%"+keyword+"%'";
-				if ((to == null || to.isEmpty()) && (from == null || from.isEmpty()))
+				if (to.isEmpty() && from.isEmpty())
 					query = "select photo_id from IMAGES where lower("+arg+") LIKE '%"+keyword+"%'";
 				
 				Statement stmt = null; ResultSet rset = null;
@@ -78,15 +78,15 @@ public class SearchController extends DatabaseController
 		        		int count = 0;
 		        		while (matcher.find()) 
 		        			count++;
-		        		if (arg == "subject")
+		        		if (arg.equals("subject"))
 		        			rank = 6*count;
 		        		else
 		        		{
-		        			if (arg == "place")
+		        			if (arg.equals("place"))
 		        				rank = 3*count;
 		        			else
 	        					{
-	      						if (arg == "description")
+	      						if (arg.equals("description"))
 	      							rank = count;
 	        					}
 		        		}
@@ -103,12 +103,12 @@ public class SearchController extends DatabaseController
 	        }
 		
 		
-		if (timebias == "Neither")
+		if (timebias.equals("Neither"))
 			Collections.sort(photoList, PhotoSort.SEARCH_RANK_REVERSE);
-		if (timebias == "Most-Recent")
-			Collections.sort(photoList);
-		if (timebias == "Least-Recent")
+		if (timebias.equals("Most-Recent"))
 			Collections.sort(photoList, Collections.reverseOrder());
+		if (timebias.equals("Least-Recent"))
+			Collections.sort(photoList);
 			
 		
 		return photoList;

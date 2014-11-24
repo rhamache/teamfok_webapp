@@ -1,8 +1,11 @@
 package search;
 
 import java.io.*;
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -71,6 +74,41 @@ public class SearchServlet extends HttpServlet
 		  			String timebias = request.getParameter("Timebias");
 		  			String from = request.getParameter("From");
 		  			String to = request.getParameter("To");
+		  			
+		  			html.appendHTML("from "+from+" to "+to);
+		  			
+		  			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+		  			Date dfrom = null, dto = null;
+		  			try
+					{
+		  				if (!from.isEmpty())
+		  					dfrom = sdf.parse(from);
+		  				if (!to.isEmpty())
+		  					dto = sdf.parse(to);
+					} catch (ParseException e)
+					{
+			  			ServletContext context = getServletContext();
+			  			String path = context.getRealPath("/html/search.html");
+			  			html.appendHTML("Date in incorrect format.");
+			  			html.buildFromFile(path);
+			  			html.makeFooter();
+			  			html.putInResponse(response);
+			  			return;
+					}
+		  			
+		  			if (!to.isEmpty() && !from.isEmpty())
+		  			{
+		  				if (dfrom.compareTo(dto) > 0)
+		  				{
+				  			ServletContext context = getServletContext();
+				  			String path = context.getRealPath("/html/search.html");
+				  			html.appendHTML("'From' date is after 'to' date.");
+				  			html.buildFromFile(path);
+				  			html.makeFooter();
+				  			html.putInResponse(response);
+				  			return;
+		  				}
+		  			}
 		  
 		  			
 	      
@@ -109,10 +147,11 @@ public class SearchServlet extends HttpServlet
 
 		  			int i;
 		  			boolean allowed = false;
-		  			for (i = 0; i < results.size(); i++){
+		  			for (i = 0; i < results.size(); i++)
+		  			{
 		  				try {
 		  						Photo photo = dc.getPhoto(results.get(i).id);
-		  						html.appendHTML(user+' '+photo.getOwnerName());
+		  						results.set(i, photo);
 		  						allowed = sc.userAllowedView(photo.getPermitted(), user, photo.getOwnerName());
 		  						if (!allowed)
 		  							results.remove(i);
@@ -127,9 +166,7 @@ public class SearchServlet extends HttpServlet
 		  			}
 		  			
 		  			if ((!results.isEmpty())){
-		  					html.appendHTML("wtf");
-		  					html.appendHTML(results.get(0).getOwnerName());
-		  					//html.appendHTML(dc.createHTML(results,0,user));}
+		  					html.appendHTML(dc.createHTML(results,0,user));
 		  			}	else
 		  					html.appendHTML("No Matches");
 		  			
