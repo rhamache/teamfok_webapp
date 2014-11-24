@@ -31,7 +31,7 @@ public class HTMLBuilder
 	
 	public void appendHTML(String text)
 	{
-		pw.println("<p>"+text+"</p>");
+		pw.println(text);
 	}
 	
 	public void makeHeader(String text){

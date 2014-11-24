@@ -33,7 +33,9 @@ public class SecurityController extends DatabaseController
 	
 	public static boolean isAdmin(HttpSession sesh)
 	{
-		  if (sesh.getAttribute("username").toString().equals("admin")) {
+		  if(sesh.getAttribute("username") == null) {
+			  return false;
+		  } else if (sesh.getAttribute("username").toString().equals("admin")) {
 			  return true;
 		  } else {
 			  return false;

@@ -88,21 +88,32 @@ public class AnalysisServlet extends HttpServlet
 			e.printStackTrace(response.getWriter());
 		}
 		
-		int i;
+		int i = 1; String last_time_period = "";
+		html.appendHTML("<table border = \"1\">");
 		try{
 			while (rset != null && rset.next())
 			{
-				for (i = 0; i < rsmd.getColumnCount(); i++)
+				if (!last_time_period.equals(rset.getString(1)))
+					html.appendHTML("<tr><td style = \"min-width:100px;height:50px;\">"+rset.getString(1)+"</td>");
+				else
+					html.appendHTML("<tr><td style = \"min-width:100px;height:50px;\"></td>");
+				for (i = 2; i <= rsmd.getColumnCount(); i++)
 				{
+					html.appendHTML("<td style = \"min-width:200px;\">");
 					html.appendHTML(rset.getString(i));
+					html.appendHTML("</td>");
 				}
-				html.appendHTML("<hr>");
+				last_time_period = rset.getString(1);
+
+				html.appendHTML("</tr>");
 			}
 		}
 		catch (SQLException e)
 		{
-			html.appendHTML(e.getMessage());
+			html.appendHTML("rset exception: "+e.getMessage()+" index: "+i);
 		}
+		
+		html.appendHTML("</tr></table>");
 		
 		html.makeFooter();
 		html.putInResponse(response);

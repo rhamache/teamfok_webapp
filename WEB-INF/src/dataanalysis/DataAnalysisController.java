@@ -36,11 +36,11 @@ public class DataAnalysisController extends DatabaseController
 				{
 					if (toExists && fromExists)
 					{
-						query = ("SELECT  EXTRACT(year from timing), subject, COUNT(*)" +
-								"FROM images i" +
-								"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"'" +
-								"GROUP BY EXTRACT(year from timing), subject" +
-								"ORDER BY EXTRACT(year from timing)");
+						query = ("SELECT  EXTRACT(year from timing), subject, COUNT(*) " +
+								"FROM images i " +
+								"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
+								"GROUP BY EXTRACT(year from timing), subject " +
+								"ORDER BY EXTRACT(year from timing) ");
 			        	stmt = conn.createStatement();
 			        	rset = stmt.executeQuery(query);
 			        	return rset;
@@ -50,10 +50,7 @@ public class DataAnalysisController extends DatabaseController
 			
 			
 			
-		if (users)
-			return rset;
-		
-		return rset;
+		return null;
 		
 		
 	}
