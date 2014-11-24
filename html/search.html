@@ -1,13 +1,8 @@
-<html>
-<head>
 <title> Search </title>
-</head>
-<body>
-<center>
 <h1><b>Search Page</b></h1>
-<form action="sql_input.html" method=POST>
+<form action="search.html" method="POST">
 <h4>Keywords</h4>
-<textarea rows = 5 cols = 40 name=query style="width: 300px; height: 200px; resize: none;" >
+<textarea rows = 5 cols = 40 name="query" style="width: 300px; height: 200px; resize: none;" >
 </textarea>
 <br>
 Space-Seperated
@@ -15,20 +10,12 @@ Space-Seperated
 <br>
 From: <input type="date" name="From">
 To: <input type= "date" name = "To">
-<p> format: (mm/dd/yyyy) </p>
-
-<input type="radio" name="Most" value="Most-Recent" > Most-Recent
+<p> format: (dd-MMM-yyyy) </p>
+<input type="radio" name="Timebias" value="Most-Recent" > Most-Recent
 <br>
-<input type="radio" name="Least" value="Least-Recent"> Least-Recent
+<input type="radio" name="Timebias" value="Least-Recent"> Least-Recent
 <br>
-<input type="radio" name="Neither" value="Neither" checked > Neither
+<input type="radio" name="Timebias" value="Neither" checked > Neither
 <br>
-<table>
-<tr><td><input type = "submit" value = "execute" name = "Keywords" ></td>
-<td><table border = 1></tr></td>
-</table>
+<input type = "submit" value = "execute" >
 </form>
-</body>
-</html>
-</body>
-</html>
