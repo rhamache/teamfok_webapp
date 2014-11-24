@@ -72,6 +72,7 @@ public class SearchServlet extends HttpServlet
 		  			String path = context.getRealPath("/html/search.html");
 			  
 		  			html.buildFromFile(path);
+		  			html.appendHTML("<hr>");
 		  
 		  			String user = request.getSession().getAttribute("username").toString();
 		  			PrintWriter out = response.getWriter();
