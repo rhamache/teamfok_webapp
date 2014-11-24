@@ -19,48 +19,35 @@ public class DataAnalysisController extends DatabaseController
 	
 	public ResultSet dataAnalysis(String filter, String from, String to, String period) throws SQLException
 	{
-		boolean subject = false;
-		boolean users = false;
-		boolean yearly = false;
-		boolean monthly = false;
-		boolean weekly = false;
-		boolean fromExists = false;
-		boolean toExists = false;
-		if (filter.equals("users"))
-			users = true;
-		if (filter.equals("subject"))
-			users = true;
-		if (period.equals("yearly"))
-			yearly = true;
-		if (period.equals("monthly"))
-			monthly = true;
-		if (period.equals("monthly"))
-			monthly = true;
-		if (!from.isEmpty())
-			fromExists = true;
-		if (!to.isEmpty())
-			toExists = true;
+		boolean subject = filter.equals("subject");
+		boolean users = filter.equals("users");
+		boolean yearly = period.equals("yearly");
+		boolean monthly = period.equals("monthly");
+		boolean weekly = period.equals("weekly");
+		boolean fromExists = !from.isEmpty();
+		boolean toExists = !to.isEmpty();
+
 		String query = null;
 
 		Statement stmt = null; ResultSet rset = null;
 		if (subject)
-			{	
-				if (yearly)
+		{	
+			if (yearly)
+			{
+				if (toExists && fromExists)
 				{
-					if (toExists && fromExists)
-					{
-						query = ("SELECT COUNT(*)" +
+					query = ("SELECT COUNT(*)" +
 								"FROM images i" +
 								"WHERE timing >='"+to+"' AND timing <= '"+from+"'" +
 								"GROUP BY subjects" +
 								"ORDER BY datepart(year, timing)");
 						
-			        	stmt = conn.createStatement();
-			        	rset = stmt.executeQuery(query);
-			        	return rset;
-					}
+			        stmt = conn.createStatement();
+			        rset = stmt.executeQuery(query);
+			        return rset;
 				}
 			}
+		}
 			
 			
 		if (users)

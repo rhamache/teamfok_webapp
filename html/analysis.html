@@ -1,7 +1,7 @@
 
-<form>
+<form name="generate-olap" method="POST">
 <b>Get image count for different:</b><br>
-<input type="radio" name="filter-by" value="users" > Users
+<input type="radio" name="filter-by" value="users" checked> Users
 <br>
 <input type="radio" name="filter-by" value="subject"> Subject
 <br>
@@ -11,9 +11,11 @@ From: <input type="date" name="From">
 To: <input type= "date" name = "To"> 
 <p> format: (mm/dd/yyyy)  </p>
 <b>Period:</b><br>
-<input type="radio" name="time-frame" value="yearly" > Yearly
+<input type="radio" name="time-frame" value="yearly" checked> Yearly
 <br>
 <input type="radio" name="time-frame" value="monthly"> Monthly
 <br>
 <input type="radio" name="time-frame" value="weekly"> Weekly
 <br>
+<input type="submit" name=".submit" value="Generate"></td>
+</form>
