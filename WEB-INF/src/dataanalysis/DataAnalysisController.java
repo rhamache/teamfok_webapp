@@ -31,23 +31,23 @@ public class DataAnalysisController extends DatabaseController
 
 		Statement stmt = null; ResultSet rset = null;
 		if (subject)
-		{	
-			if (yearly)
-			{
-				if (toExists && fromExists)
+			{	
+				if (yearly)
 				{
-					query = ("SELECT COUNT(*)" +
+					if (toExists && fromExists)
+					{
+						query = ("SELECT  EXTRACT(year from timing), subject, COUNT(*)" +
 								"FROM images i" +
-								"WHERE timing >='"+to+"' AND timing <= '"+from+"'" +
-								"GROUP BY subjects" +
-								"ORDER BY datepart(year, timing)");
-						
-			        stmt = conn.createStatement();
-			        rset = stmt.executeQuery(query);
-			        return rset;
+								"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"'" +
+								"GROUP BY EXTRACT(year from timing), subject" +
+								"ORDER BY EXTRACT(year from timing)");
+			        	stmt = conn.createStatement();
+			        	rset = stmt.executeQuery(query);
+			        	return rset;
+					}
 				}
 			}
-		}
+			
 			
 			
 		if (users)
