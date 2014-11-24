@@ -43,51 +43,24 @@ public class UploadServlet extends HttpServlet
 			try
 			{
 				udbc = new UploadController();
-			} catch (SQLException e1)
+			} catch (Exception e1)
 			{
 				e1.printStackTrace();
-			} catch (ClassNotFoundException e1)
-			{
-				e1.printStackTrace();
-			} catch (InstantiationException e1)
-			{
-				e1.printStackTrace();
-			} catch (IllegalAccessException e1)
-			{
-				e1.printStackTrace();
-			}
+			} 
 			SecurityController sdbc = null;
 			try
 			{
 				sdbc = new SecurityController();
-			} catch (SQLException e1)
-			{
-				e1.printStackTrace();
-			} catch (ClassNotFoundException e1)
-			{
-				e1.printStackTrace();
-			} catch (InstantiationException e1)
-			{
-				e1.printStackTrace();
-			} catch (IllegalAccessException e1)
+			} catch (Exception e1)
 			{
 				e1.printStackTrace();
 			}
+
 			
 			ServletContext context = getServletContext();
 			String path = context.getRealPath("/html/upload.html");
 			html.buildFromFile(path);
-			String uname = request.getSession().getAttribute("username").toString();
-			
-			try
-			{
-				userGroups = udbc.gatherGroups(uname);
-			} catch (SQLException e)
-			{
-				e.printStackTrace();
-				html.appendHTML("udbc exception");
-			}
-			
+			html.appendHTML(udbc.createGroupSelector(request.getSession().getAttribute("username").toString()));
 
 			html.appendHTML("<a href=\"display/myphotos\">My Uploaded Photos</a>");
 			html.makeFooter();
@@ -106,6 +79,9 @@ public class UploadServlet extends HttpServlet
 		
 		HTMLBuilder html = new HTMLBuilder();
 		html.makeHeader();
+		
+		ServletContext context = getServletContext();
+		String path = context.getRealPath("/html/upload.html");
 		
 		if (!SecurityController.isLoggedIn(request.getSession()))
 		{
@@ -150,18 +126,22 @@ public class UploadServlet extends HttpServlet
 		            	place = item.getString();
 		            if (item.getFieldName().equals("DES"))
 		            	description = item.getString();
-		            if (item.getFieldName().equals("privacy"))
+		            if (item.getFieldName().equals("GROUP"))
 		            	privacy = item.getString();
 		        } else if (item.getFieldName().equals("FILEP"))
 		        {
-		        	instream = item.getInputStream();
+		        	if (!item.getString().isEmpty())
+		        		instream = item.getInputStream();
 		        }
 
 		    }
 			
 			if (instream == null)
 			{
-				html.appendHTML("You didn't specify an image!");
+				html.buildFromFile(path);
+				html.appendHTML(udbc.createGroupSelector(request.getSession().getAttribute("username").toString()));
+				html.appendHTML("<h2>You didn't specify an image!</h2>");
+				html.appendHTML("<a href=\"display/myphotos\">My Uploaded Photos</a>");
 				html.makeFooter();
 				html.putInResponse(response);
 				return;
@@ -176,7 +156,7 @@ public class UploadServlet extends HttpServlet
        
             ArrayList<String> infoBundle = new ArrayList<String>();
             infoBundle.add(request.getSession().getAttribute("username").toString());
-            infoBundle.add("1");
+            infoBundle.add(privacy);
             infoBundle.add(subject);
             infoBundle.add(place);
             infoBundle.add(description);        
@@ -187,8 +167,7 @@ public class UploadServlet extends HttpServlet
 
 	    	
 	    	udbc.executeSQLTextStatement("commit");
-            response_message = " Upload OK!  ";
-            udbc.close();
+            response_message = "<h2>Upload OK!</h2>";
 
 		} catch( Exception ex ) {
 			//System.out.println( ex.getMessage());
@@ -198,7 +177,19 @@ public class UploadServlet extends HttpServlet
 
 		//Output response to the client
 		response.setContentType("text/html");
+		html.buildFromFile(path);
+		html.appendHTML(udbc.createGroupSelector(request.getSession().getAttribute("username").toString()));
+		
+		try
+		{
+			udbc.close();
+		} catch (SQLException e)
+		{
+			html.appendHTML(e.getMessage());
+		}
+		
 		html.makeBody(response_message);
+		html.appendHTML("<a href=\"display/myphotos\">My Uploaded Photos</a>");
 		html.putInResponse(response);
 		
 		}
