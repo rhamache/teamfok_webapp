@@ -193,4 +193,36 @@ public class SecurityController extends DatabaseController
 		stmt.executeUpdate(sql2);
 		stmt.executeUpdate("COMMIT");
 	}
+	
+	
+	public boolean userAllowedView(int permission, String username, String owner){
+
+		if (permission == 1)
+			return true;
+		if (owner == username)
+			return true;
+		Map <Integer,String> groups = null;
+		try {
+			groups = new HashMap<Integer, String>(getGroupsOwnedBy(username));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (groups.containsKey(permission))
+			return true;
+		List <String> members = null;
+		try {
+			members = new ArrayList<String>(getMembersOf(permission));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (members.contains(username))
+			return true;
+		
+		return false;
+		
+	}
+
+	
 }

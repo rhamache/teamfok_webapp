@@ -139,6 +139,17 @@
         <servlet-name>DeletePhotoServlet</servlet-name>
         <url-pattern>/display/delete</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>AnalysisServlet</servlet-name>
+        <servlet-class>dataanalysis.AnalysisServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AnalysisServlet</servlet-name>
+        <url-pattern>/analysis.html</url-pattern>
+    </servlet-mapping>
+    
 
 
 
