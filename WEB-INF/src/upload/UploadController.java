@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +17,7 @@ import oracle.jdbc.OracleResultSet;
 import oracle.sql.BLOB;
 import proj1.DatabaseController;
 import proj1.Photo;
+import security.SecurityController;
 
 public class UploadController extends DatabaseController
 {
@@ -142,7 +145,7 @@ public class UploadController extends DatabaseController
 	
 	public ArrayList<Integer> gatherGroups(String username) throws SQLException{
 		ArrayList<Integer> groupsInvolved = new ArrayList<Integer>();
-		String query = "select group_id from group_lists where lower(friend_id) = '"+username+"';";
+		String query = "select group_id from group_lists where friend_id = '"+username+"'";
 		Statement stmt = null; ResultSet rset = null;
 	
 		stmt = conn.createStatement();
@@ -153,6 +156,54 @@ public class UploadController extends DatabaseController
     	}
 		
     	return groupsInvolved;
+	}
+
+	public String createGroupSelector(String uname)
+	{
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		
+		ArrayList<Integer> userGroups = new ArrayList<Integer>(0);
+		try
+		{
+			userGroups = this.gatherGroups(uname);
+		} catch (SQLException e)
+		{
+			pw.println("<p>"+e.getMessage()+"</p>");
+		}
+		
+		SecurityController sdbc = null;
+		try
+		{
+			sdbc = new SecurityController();
+		} catch (Exception e1)
+		{
+			pw.println("<p>"+e1.getMessage()+"</p>");
+		} 
+		
+		for (Integer groupId : userGroups)
+		{
+			String gname = null;
+			try
+			{
+				gname = sdbc.getGroupName(groupId.intValue());
+			} catch (SQLException e)
+			{
+				pw.println("<p>"+e.getMessage()+"</p>");
+			}
+			pw.println("<option value=\""+groupId+"\">"+gname+"</option>");
+		}
+		pw.println("</select>");
+		
+		try
+		{
+			sdbc.close();
+		} catch (SQLException e)
+		{
+			pw.println("<p>"+e.getMessage()+"</p>");
+		}
+		
+		return sw.getBuffer().toString();
 	}
 
 }

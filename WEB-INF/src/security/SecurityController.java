@@ -163,9 +163,24 @@ public class SecurityController extends DatabaseController
 	{
 		String sql = "DELETE FROM group_lists WHERE group_id = "+group_id;
 		String sql2 = "DELETE FROM groups WHERE group_id = "+group_id;
-		Statement stmt = null;
-		
+		String sql3 = "DELETE FROM images WHERE permitted = "+group_id;
+		Statement stmt = null; ResultSet rset = null;
 		stmt = conn.createStatement();
+		
+		String query = "SELECT photo_id FROM images WHERE permitted = "+group_id;
+		
+		rset = stmt.executeQuery(query);
+		while (rset != null && rset.next())
+		{
+			int curr_id = rset.getInt(1);
+			String sql4 = "DELETE FROM hits WHERE photo_id = "+curr_id;
+			String sql5 = "DELETE FROM hitcounts WHERE photo_id = "+curr_id;
+			
+			stmt.executeUpdate(sql4);
+			stmt.executeUpdate(sql5);
+		}
+		
+		stmt.executeUpdate(sql3);
 		stmt.executeUpdate(sql);
 		stmt.executeUpdate(sql2);
 		stmt.executeUpdate("COMMIT");

@@ -15,6 +15,7 @@ import oracle.sql.BLOB;
 
 import proj1.DatabaseController;
 import proj1.Photo;
+import security.SecurityController;
 
 
 public class DisplayController extends DatabaseController
@@ -159,6 +160,19 @@ public class DisplayController extends DatabaseController
 				pw.println(e.getMessage());
 				return html.getBuffer().toString();
 			}
+			
+			String gname = "";
+			SecurityController sc = null;
+			try
+			{
+				sc = new SecurityController();
+				gname = sc.getGroupName(p.getPermitted());
+				sc.close();
+			} catch (Exception e)
+			{
+				e.printStackTrace(pw);
+			} 
+			
             pw.println("<tr><td style = \"min-width:300px;height:300px\"><a href=\"/proj1/display/getpic?"+p.id+"\">");
             pw.println("<img src=\"/proj1/display/getpic?tmb"+p.id +"\"></a></td>");
             pw.println("<td style = \"min-width:600px;height:300px\"><p>");
@@ -168,6 +182,7 @@ public class DisplayController extends DatabaseController
             pw.println("<b>Date:</b> "+p.getDate().toString());
             pw.println("<b>Description:</b> "+p.getDescription());
             pw.println("<b>Unique hits:</b> "+hits);
+            pw.println("<b>Group:</b> "+gname);
             if (p.getOwnerName().equals(username))
             {
             	pw.println("<b><a href = \"/proj1/display/delete?"+p.id+"\">Delete</a></b> ");
