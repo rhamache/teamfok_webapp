@@ -29,8 +29,9 @@ public class SearchController extends DatabaseController
 	}
 
 
-	public int SearchMain(String keywords, String timebias, String from, String to) throws SQLException, ParseException
-	{
+	public ArrayList<Photo> SearchMain(String keywords, String timebias, String from, String to) throws SQLException, ParseException
+	{	if (keywords == null)
+				keywords = " ";
 		String[] keywordarr = keywords.toLowerCase().split(" ");
 		String[] photoargs  = {"owner_name","subject","place","description"};
 		Set<Integer> photoIDarr =  new HashSet<Integer>();
@@ -40,27 +41,21 @@ public class SearchController extends DatabaseController
 		{
 			for (String arg : photoargs)				//For each argument we will have to iterate
 			{	
-				String query;
-				if (to != null && from!= null)
-					query = "select photo_id from IMAGES where timing >= '"+from+"' AND timing <= '"+to+"' AND lower("+arg+") LIKE '%"+keyword+"%'";
-
-				else
-				{
-					if (to != null)
-						query = "select photo_id from IMAGES where timing <= '"+to+"' AND lower("+arg+") LIKE '%"+keyword+"%'";
-					else
-					{
-						if (from != null)
-							query = "select photo_id from IMAGES where timing >= '"+from+"' AND lower("+arg+") LIKE '%"+keyword+"%'";
-						else
-							query = "select photo_id from IMAGES where lower("+arg+") LIKE '%"+keyword+"%'";
-					}
-				}
+				String query = null;
+				if ((to != null || !to.isEmpty()) && (from!= null || !from.isEmpty())){
+					query = "select photo_id from IMAGES where timing >= '"+from+"' AND timing <= '"+to+"' AND lower("+arg+") LIKE '%"+keyword+"%'";}
+				if ((to != null || !to.isEmpty()) && (from == null || from.isEmpty()))
+						query = "select photo_id from IMAGES where timing <= "+to+" AND lower("+arg+") LIKE '%"+keyword+"%'";
+				if ((to == null || to.isEmpty()) && (from != null || !from.isEmpty()))
+					query = "select photo_id from IMAGES where timing >= '"+from+"' AND lower("+arg+") LIKE '%"+keyword+"%'";
+				if ((to == null || to.isEmpty()) && (from == null || from.isEmpty()))
+					query = "select photo_id from IMAGES where lower("+arg+") LIKE '%"+keyword+"%'";
+				
 				Statement stmt = null; ResultSet rset = null;
 	        	stmt = conn.createStatement();
 	        	rset = stmt.executeQuery(query);
 
-	        	while (rset.next())
+	        	while (rset != null && rset.next())
 	        	{			
 	        		boolean doesContain = photoIDarr.contains(new Integer(rset.getInt(1)));
 	        		if (!doesContain)
@@ -107,16 +102,16 @@ public class SearchController extends DatabaseController
 	        	}
 	        }
 		
-
 		
-		//Collections.sort(photoList, PhotoSort.SEARCH_RANK_REVERSE);
-		Collections.sort(photoList, Collections.reverseOrder());
-		for (Photo p : photoList){
-			System.out.print(p.id);
-			System.out.print('\t');
-			System.out.println(p.getRank());}
+		if (timebias == "Neither")
+			Collections.sort(photoList, PhotoSort.SEARCH_RANK_REVERSE);
+		if (timebias == "Most-Recent")
+			Collections.sort(photoList);
+		if (timebias == "Least-Recent")
+			Collections.sort(photoList, Collections.reverseOrder());
+			
 		
-		return 1;
+		return photoList;
         } 
 }
 
