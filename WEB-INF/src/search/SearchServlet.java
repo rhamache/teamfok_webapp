@@ -67,6 +67,11 @@ public class SearchServlet extends HttpServlet
 		  				return;
 		  			}
 		  			html.makeMenu(request.getSession());
+		  			
+		  			ServletContext context = getServletContext();
+		  			String path = context.getRealPath("/html/search.html");
+			  
+		  			html.buildFromFile(path);
 		  
 		  			String user = request.getSession().getAttribute("username").toString();
 		  			PrintWriter out = response.getWriter();
@@ -75,7 +80,6 @@ public class SearchServlet extends HttpServlet
 		  			String from = request.getParameter("From");
 		  			String to = request.getParameter("To");
 		  			
-		  			html.appendHTML("from "+from+" to "+to);
 		  			
 		  			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
 		  			Date dfrom = null, dto = null;
@@ -87,10 +91,7 @@ public class SearchServlet extends HttpServlet
 		  					dto = sdf.parse(to);
 					} catch (ParseException e)
 					{
-			  			ServletContext context = getServletContext();
-			  			String path = context.getRealPath("/html/search.html");
 			  			html.appendHTML("Date in incorrect format.");
-			  			html.buildFromFile(path);
 			  			html.makeFooter();
 			  			html.putInResponse(response);
 			  			return;
@@ -100,10 +101,7 @@ public class SearchServlet extends HttpServlet
 		  			{
 		  				if (dfrom.compareTo(dto) > 0)
 		  				{
-				  			ServletContext context = getServletContext();
-				  			String path = context.getRealPath("/html/search.html");
 				  			html.appendHTML("'From' date is after 'to' date.");
-				  			html.buildFromFile(path);
 				  			html.makeFooter();
 				  			html.putInResponse(response);
 				  			return;
