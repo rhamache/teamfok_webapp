@@ -41,13 +41,33 @@
     </servlet-mapping>
    
    <servlet>
-        <servlet-name>RawSQLServlet</servlet-name>
-        <servlet-class>proj1.RawSQLServlet</servlet-class>
+        <servlet-name>GroupsServlet</servlet-name>
+        <servlet-class>security.GroupsServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>RawSQLServlet</servlet-name>
-        <url-pattern>/sql_input.html</url-pattern>
+        <servlet-name>GroupsServlet</servlet-name>
+        <url-pattern>/groups.html</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>GroupCreationServlet</servlet-name>
+        <servlet-class>security.GroupCreationServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GroupCreationServlet</servlet-name>
+        <url-pattern>/groupcreation.html</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>SingleGroupServlet</servlet-name>
+        <servlet-class>security.SingleGroupServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SingleGroupServlet</servlet-name>
+        <url-pattern>/groups/*</url-pattern>
     </servlet-mapping>
     
     <servlet>
@@ -56,9 +76,80 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>RawSQLServlet</servlet-name>
-        <url-pattern>/sql_input.html</url-pattern>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <url-pattern>/registration.html</url-pattern>
     </servlet-mapping>
+    
+   <servlet>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>search.SearchServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SearchServlet</servlet-name>
+        <url-pattern>/search</url-pattern>
+    </servlet-mapping>
+
+   <servlet>
+        <servlet-name>UploadServlet</servlet-name>
+        <servlet-class>upload.UploadServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UploadServlet</servlet-name>
+        <url-pattern>/upload.html</url-pattern>
+    </servlet-mapping>
+
+   <servlet>
+        <servlet-name>DisplayServlet</servlet-name>
+        <servlet-class>display.DisplayServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DisplayServlet</servlet-name>
+        <url-pattern>/display</url-pattern>
+    </servlet-mapping>
+    
+      <servlet>
+        <servlet-name>DisplayOneServlet</servlet-name>
+        <servlet-class>display.DisplayOneServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DisplayOneServlet</servlet-name>
+        <url-pattern>/display/getpic</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>MyPhotosServlet</servlet-name>
+        <servlet-class>upload.MyPhotosServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MyPhotosServlet</servlet-name>
+        <url-pattern>/display/myphotos</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeletePhotoServlet</servlet-name>
+        <servlet-class>upload.DeletePhotoServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DeletePhotoServlet</servlet-name>
+        <url-pattern>/display/delete</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>AnalysisServlet</servlet-name>
+        <servlet-class>dataanalysis.AnalysisServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AnalysisServlet</servlet-name>
+        <url-pattern>/analysis.html</url-pattern>
+    </servlet-mapping>
+    
 
 
 
