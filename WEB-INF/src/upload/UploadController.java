@@ -82,6 +82,8 @@ public class UploadController extends DatabaseController
 	    ImageIO.write(img, "jpg", outstream);
 	    
 	    stmt.executeUpdate("COMMIT");
+	    
+	    stmt.close();
 	}
 
 	
@@ -141,6 +143,8 @@ public class UploadController extends DatabaseController
 		stmt.executeUpdate(sql2);
 		stmt.executeUpdate(sql);
 		stmt.executeUpdate("COMMIT");
+		
+		stmt.close();
 	}
 	
 	public ArrayList<Integer> gatherGroups(String username) throws SQLException{
@@ -155,6 +159,7 @@ public class UploadController extends DatabaseController
     		groupsInvolved.add((rset.getInt(1)));
     	}
 		
+    	stmt.close();
     	return groupsInvolved;
 	}
 
@@ -197,7 +202,8 @@ public class UploadController extends DatabaseController
 		
 		try
 		{
-			sdbc.close();
+			if (sdbc != null)
+				sdbc.close();
 		} catch (SQLException e)
 		{
 			pw.println("<p>"+e.getMessage()+"</p>");

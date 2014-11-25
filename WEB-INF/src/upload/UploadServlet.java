@@ -38,7 +38,7 @@ public class UploadServlet extends HttpServlet
 			HTMLBuilder html = new HTMLBuilder();
 			html.makeHeader();
 			html.makeMenu(request.getSession());
-			ArrayList<Integer> userGroups = new ArrayList<Integer>();
+			
 			UploadController udbc = null;
 			try
 			{
@@ -47,14 +47,7 @@ public class UploadServlet extends HttpServlet
 			{
 				e1.printStackTrace();
 			} 
-			SecurityController sdbc = null;
-			try
-			{
-				sdbc = new SecurityController();
-			} catch (Exception e1)
-			{
-				e1.printStackTrace();
-			}
+	
 
 			
 			ServletContext context = getServletContext();
@@ -64,6 +57,16 @@ public class UploadServlet extends HttpServlet
 
 			html.appendHTML("<a href=\"display/myphotos\">My Uploaded Photos</a>");
 			html.makeFooter();
+			
+			
+			try
+			{
+				udbc.close();
+			} catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+			
 			html.putInResponse(response);
 		}
 	}

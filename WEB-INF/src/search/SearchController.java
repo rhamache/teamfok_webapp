@@ -66,30 +66,30 @@ public class SearchController extends DatabaseController
 	        		}
 	        	}
 		        for (Photo photo : photoList)
-		        	{	
-		        		Integer rank = 0;
-		        		query = "select "+arg+" from IMAGES where  photo_id ='"+photo.id+"'"; //collect the argument from said photoID
-		        		stmt = conn.createStatement();
-		        		rset = stmt.executeQuery(query);
-		        		rset.next();
-		        		String relevArg = rset.getString(1);
-		        		Pattern pattern = Pattern.compile(keyword); 
-		        		Matcher matcher = pattern.matcher(relevArg);    //See how many times the keyword matches to said argument
-		        		int count = 0;
-		        		while (matcher.find()) 
-		        			count++;
-		        		if (arg.equals("subject"))
-		        			rank = 6*count;
+		        {	
+		        	Integer rank = 0;
+		        	query = "select "+arg+" from IMAGES where  photo_id ='"+photo.id+"'"; //collect the argument from said photoID
+		        	stmt = conn.createStatement();
+		        	rset = stmt.executeQuery(query);
+		        	rset.next();
+		        	String relevArg = rset.getString(1);
+		        	Pattern pattern = Pattern.compile(keyword); 
+		        	Matcher matcher = pattern.matcher(relevArg);    //See how many times the keyword matches to said argument
+		        	int count = 0;
+		        	while (matcher.find()) 
+		        		count++;
+		        	if (arg.equals("subject"))
+		        		rank = 6*count;
+		        	else
+		        	{
+		        		if (arg.equals("place"))
+		        			rank = 3*count;
 		        		else
-		        		{
-		        			if (arg.equals("place"))
-		        				rank = 3*count;
-		        			else
-	        					{
-	      						if (arg.equals("description"))
-	      							rank = count;
-	        					}
-		        		}
+	        			{
+	      					if (arg.equals("description"))
+	      					rank = count;
+	        			}
+		        	}
 		        	query = "select timing from IMAGES where  photo_id ='"+photo.id+"'";
 	        		stmt = conn.createStatement();
 	        		rset = stmt.executeQuery(query);
@@ -98,9 +98,11 @@ public class SearchController extends DatabaseController
 	        		photo.setDate(date);
 		        	int prevrank = photo.getRank();
 		        	photo.setRank(prevrank+rank);
-		        	}
-	        	}
+		        }
+		        stmt.close();
 	        }
+			
+	    }
 		
 		
 		if (timebias.equals("Neither"))

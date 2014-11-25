@@ -36,11 +36,14 @@ public class DeletePhotoServlet extends HttpServlet
 		try {
 			uc = new UploadController();
 			uc.deletePhoto(id_to_del);
+			uc.close();
 		} catch (Exception e)
 		{
 			response.getWriter().println(e.getMessage());
 			return;
 		}
+		
+		
 		
 		
 		response.sendRedirect("/proj1/display/myphotos");

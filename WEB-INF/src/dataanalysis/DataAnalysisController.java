@@ -37,33 +37,24 @@ public class DataAnalysisController extends DatabaseController
 					if (toExists && fromExists)
 					{
 						query = ("SELECT  EXTRACT(year from timing), subject, COUNT(*) " +
-								"FROM images i " +
-								"WHERE timing <= to_char('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
+								"FROM images " +
+								"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
 								"GROUP BY EXTRACT(year from timing), subject " +
 								"ORDER BY EXTRACT(year from timing) ");
-	
-			        	  
-			        	return rset;
 					}
 					if (!fromExists){
 						query = ("SELECT  EXTRACT(year from timing), subject, COUNT(*) " +
-								"FROM images i " +
-								"WHERE timing <= to_char('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') " +
+								"FROM images " +
+								"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') " +
 								"GROUP BY EXTRACT(year from timing), subject " +
 								"ORDER BY EXTRACT(year from timing) ");
-	
-			        	  
-			        	return rset;
 					}
 					if (!toExists){
 						query = ("SELECT  EXTRACT(year from timing), subject, COUNT(*) " +
-								"FROM images i " +
+								"FROM images " +
 								"WHERE timing >= '"+from+"' " +
 								"GROUP BY EXTRACT(year from timing), subject " +
 								"ORDER BY EXTRACT(year from timing) ");
-	
-			        	  
-			        	return rset;
 					}
 				}
 				if (monthly)
@@ -71,33 +62,24 @@ public class DataAnalysisController extends DatabaseController
 					if (toExists && fromExists)
 					{
 						query = ("SELECT  EXTRACT(month from timing), subject, COUNT(*) " +
-								"FROM images i " +
-								"WHERE timing <= to_char('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
+								"FROM images " +
+								"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
 								"GROUP BY EXTRACT(month from timing), subject " +
 								"ORDER BY EXTRACT(month from timing) ");
-	
-			        	  
-			        	return rset;
 					}
 					if (!fromExists){
 						query = ("SELECT  EXTRACT(month from timing)), subject, COUNT(*) " +
-								"FROM images i " +
-								"WHERE timing <= to_char('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') " +
+								"FROM images " +
+								"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') " +
 								"GROUP BY EXTRACT(month from timing), subject " +
 								"ORDER BY EXTRACT(month from timing) ");
-	
-			        	  
-			        	return rset;
 					}
 					if (!toExists){
 						query = ("SELECT  EXTRACT(month from timing), subject, COUNT(*) " +
-								"FROM images i " +
+								"FROM images " +
 								"WHERE timing >= '"+from+"' " +
 								"GROUP BY EXTRACT(month from timing), subject " +
 								"ORDER BY EXTRACT(month from timing) ");
-	
-			        	  
-			        	return rset;
 					}
 				}
 				if (weekly)
@@ -105,33 +87,24 @@ public class DataAnalysisController extends DatabaseController
 					if (toExists && fromExists)
 					{
 						query = ("SELECT  to_char(timing, 'IW'), subject, COUNT(*) " +
-								"FROM images i " +
-								"WHERE timing <= to_char('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
+								"FROM images " +
+								"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
 								"GROUP BY to_char(timing, 'IW'), subject " +
 								"ORDER BY to_char(timing, 'IW') ");
-	
-			        	  
-			        	return rset;
 					}
 					if (!fromExists){
 						query = ("SELECT  to_char(timing, 'IW'), subject, COUNT(*) " +
-								"FROM images i" +
-								"WHERE timing <= to_char('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') " +
+								"FROM images " +
+								"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') " +
 								"GROUP BY to_char(timing, 'IW'), subject " +
 								"ORDER BY to_char(timing, 'IW') ");
-	
-			        	  
-			        	return rset;
 					}
 					if (!toExists){
 						query = ("SELECT  to_char(timing, 'IW'), subject, COUNT(*) " +
-								"FROM images i " +
+								"FROM images " +
 								"WHERE timing >= '"+from+"' " +
 								"GROUP BY to_char(timing, 'IW'), subject " +
 								"ORDER BY to_char(timing, 'IW') ");
-	
-			        	  
-			        	return rset;
 					}
 				}
 					
@@ -143,27 +116,24 @@ public class DataAnalysisController extends DatabaseController
 				if (toExists && fromExists)
 				{
 					query = ("SELECT  EXTRACT(year from timing), owner_name, COUNT(*) " +
-							"FROM images i " +
-							"WHERE timing <= to_char('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
+							"FROM images " +
+							"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
 							"GROUP BY EXTRACT(year from timing), owner_name " +
 							"ORDER BY EXTRACT(year from timing) ");
-		        	return rset;
 				}
 				if (!fromExists){
 					query = ("SELECT  EXTRACT(year from timing), owner_name, COUNT(*) " +
-							"FROM images i " +
-							"WHERE timing <= to_char('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') " +
+							"FROM images " +
+							"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') " +
 							"GROUP BY EXTRACT(year from timing), owner_name " +
 							"ORDER BY EXTRACT(year from timing) ");
-		        	return rset;
 				}
 				if (!toExists){
 					query = ("SELECT  EXTRACT(year from timing), owner_name, COUNT(*) " +
-							"FROM images i " +
+							"FROM images " +
 							"WHERE timing >= '"+from+"' " +
 							"GROUP BY EXTRACT(year from timing), owner_name " +
 							"ORDER BY EXTRACT(year from timing) ");
-		        	return rset;
 				}
 			}
 			if (monthly)
@@ -171,27 +141,24 @@ public class DataAnalysisController extends DatabaseController
 				if (toExists && fromExists)
 				{
 					query = ("SELECT  EXTRACT(month from timing), owner_name, COUNT(*) " +
-							"FROM images i " +
-							"WHERE timing <= to_char('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
+							"FROM images " +
+							"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
 							"GROUP BY EXTRACT(month from timing), owner_name " +
 							"ORDER BY EXTRACT(month from timing) ");
-		        	return rset;
 				}
 				if (!fromExists){
 					query = ("SELECT  EXTRACT(month from timing), owner_name, COUNT(*) " +
-							"FROM images i " +
-							"WHERE timing <= to_char('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') " +
+							"FROM images " +
+							"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') " +
 							"GROUP BY EXTRACT(month from timing), owner_name " +
 							"ORDER BY EXTRACT(month from timing) ");
-		        	return rset;
 				}
 				if (!toExists){
 					query = ("SELECT  EXTRACT(month from timing), owner_name, COUNT(*) " +
-							"FROM images i " +
+							"FROM images " +
 							"WHERE timing >= '"+from+"' " +
 							"GROUP BY EXTRACT(month from timing), owner_name " +
 							"ORDER BY EXTRACT(month from timing) ");
-		        	return rset;
 				}
 			}
 			if (weekly)
@@ -199,35 +166,34 @@ public class DataAnalysisController extends DatabaseController
 				if (toExists && fromExists)
 				{
 					query = ("SELECT  to_char(timing, 'IW'), owner_name, COUNT(*) " +
-							"FROM images i" +
-							"WHERE timing <= to_char('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
+							"FROM images " +
+							"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
 							"GROUP BY to_char(timing, 'IW'), owner_name " +
 							"ORDER BY to_char(timing, 'IW') ");
-		        	return rset;
 				}
 				if (!fromExists){
 					query = ("SELECT  to_char(timing, 'IW'), owner_name, COUNT(*) " +
-							"FROM images i " +
-							"WHERE timing <= to_char('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') " +
+							"FROM images " +
+							"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') " +
 							"GROUP BY to_char(timing, 'IW'), owner_name " +
 							"ORDER BY to_char(timing, 'IW') ");
-
-		        	return rset;
 				}
 				if (!toExists){
 					query = ("SELECT  to_char(timing, 'IW'), owner_name, COUNT(*) " +
-							"FROM images i " +
+							"FROM images " +
 							"WHERE timing >= '"+from+"' " +
 							"GROUP BY to_char(timing, 'IW'), owner_name " +
 							"ORDER BY to_char(timing, 'IW') ");
-
-		        	return rset;
 				}
 			}
 				
 		}	
+		
+		System.out.println(query);
     	stmt = conn.createStatement();
     	rset = stmt.executeQuery(query);
+    	
+    	stmt.close();
 		return rset;
 		
 		

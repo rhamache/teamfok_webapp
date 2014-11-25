@@ -1,6 +1,8 @@
 package tests;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,6 +11,7 @@ import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import dataanalysis.DataAnalysisController;
 import display.DisplayController;
 
 import proj1.DatabaseController;
@@ -24,9 +27,9 @@ public class TestCases {
 
 	public static void main(String[] args) {
 		
-		int total_tests = 7, tests_passed = 0;
+		int total_tests = 9, tests_passed = 0;
 		
-		/*tests_passed += TestCases.TestDBC();
+		tests_passed += TestCases.TestDBC();
 		
 		tests_passed += TestCases.TestLoginPost();
 		
@@ -38,13 +41,57 @@ public class TestCases {
 		
 		tests_passed += TestCases.TestIsMemberOf();
 		
-		tests_passed += TestCases.TestSearch();
-		
-		tests_passed += TestCases.TestGroupCreate();*/
+		tests_passed += TestCases.TestGroupCreate();
 		
 		tests_passed += TestCases.TestAddHit();
 		
+		tests_passed += TestCases.TestAnalysis();
+		
 		System.out.println("Tests passed: "+tests_passed+"/"+total_tests);
+	}
+	
+	public static int TestAnalysis()
+	{
+		DataAnalysisController ac = null;
+		
+		
+		ResultSet rset = null;
+		ResultSetMetaData rsmd = null;
+		
+		try {
+			ac = new DataAnalysisController();
+			rset = ac.dataAnalysis("users", "03-MAR-1992", "24-NOV-2014", "weekly");
+			rsmd = rset.getMetaData();
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		int i = 1; String last_time_period = "";
+		System.out.println("<table border = \"1\">");
+		try{
+			while (rset != null && rset.next())
+			{
+				if (!last_time_period.equals(rset.getString(1)))
+					System.out.println("<tr><td style = \"min-width:100px;height:50px;\">"+rset.getString(1)+"</td>");
+				else
+					System.out.println("<tr><td style = \"min-width:100px;height:50px;\"></td>");
+				for (i = 2; i <= rsmd.getColumnCount(); i++)
+				{
+					System.out.println("<td style = \"min-width:200px;\">");
+					System.out.println(rset.getString(i));
+					System.out.println("</td>");
+				}
+				last_time_period = rset.getString(1);
+
+				System.out.println("</tr>");
+			}
+		}
+		catch (SQLException e)
+		{
+			System.out.println("rset exception: "+e.getMessage()+" index: "+i);
+		}
+		return 1;
 	}
 	public static int TestAddHit()
 	{
@@ -78,7 +125,7 @@ public class TestCases {
 		
 		try
 		{
-			sc.createGroup("test", "ZachB");
+			sc.createGroup("test", "admin");
 		} catch (SQLException e)
 		{
 			// TODO Auto-generated catch block
@@ -297,45 +344,5 @@ public class TestCases {
 		}
 	}
 
-	public static int TestSearch()
-	{
-		
-		
-		SearchController sc = null;
-		try
-		{
-			sc = new SearchController();
-		} catch (SQLException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		HashSet<String> printed = null;
 
-		
-		try
-		{
-			sc.close();
-		} catch (SQLException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		for (String photoid : printed){
-			System.out.println("ID: "+photoid);	
-			}
-		return 1;
-	}
 }

@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import oracle.jdbc.OracleResultSet;
 import oracle.sql.BLOB;
@@ -51,6 +53,7 @@ public class DisplayController extends DatabaseController
 		for (Integer i : permitted_groups)
 			photos.addAll(getGroupPhotos(i.intValue()));
 		
+		stmt.close();
 		return photos;
 	}
 	
@@ -70,6 +73,7 @@ public class DisplayController extends DatabaseController
 								rset.getString(7), ((OracleResultSet) rset).getBLOB(8), ((OracleResultSet) rset).getBLOB(9)) );
 		}
 		
+		stmt.close();
 		return photos;
 		
 	}
@@ -91,6 +95,7 @@ public class DisplayController extends DatabaseController
 								rset.getString(7), ((OracleResultSet) rset).getBLOB(8), ((OracleResultSet) rset).getBLOB(9)) );
 		}
 		
+		stmt.close();
 		return photos;
 	}
 	
@@ -110,6 +115,7 @@ public class DisplayController extends DatabaseController
 								rset.getString(7), ((OracleResultSet) rset).getBLOB(8), ((OracleResultSet) rset).getBLOB(9)) );
 		}
 		
+		stmt.close();
 		return photos;
 		
 	}
@@ -129,6 +135,7 @@ public class DisplayController extends DatabaseController
 								rset.getString(7), ((OracleResultSet) rset).getBLOB(8), ((OracleResultSet) rset).getBLOB(9)) );
 		}
 		
+		stmt.close();
 		return photos;
 		
 	}
@@ -218,20 +225,33 @@ public class DisplayController extends DatabaseController
 	{
 		ArrayList<Photo> photos = new ArrayList<Photo>();
 		
-		String query = "SELECT photo_id FROM hitcounts ORDER BY uniq_hits DESC";
+		String query = "SELECT uniq_hits FROM hitcounts ORDER BY uniq_hits DESC";
 		Statement stmt = null; ResultSet rset = null;
 		
 		stmt = conn.createStatement();
 		rset = stmt.executeQuery(query);
 		
+		Set<Integer> pop_levels = new HashSet<Integer>();
+		
 		int count = 0;
 		while(rset != null && rset.next() && count < 5)
 		{
-			photos.add(getPhoto(rset.getInt(1)));
+			pop_levels.add( new Integer(rset.getInt(1)) );
 			count++;
 		}
 		
+		for (Integer pop_level: pop_levels)
+		{
+			String query2 = "SELECT photo_id FROM hitcounts WHERE uniq_hits = "+pop_level.toString();
+			
+			rset = stmt.executeQuery(query2);
+			
+			while(rset != null && rset.next())
+				photos.add(this.getPhoto(rset.getInt(1)));
+			
+		}
 		
+		stmt.close();
 		return photos;
 	}
 	
@@ -251,6 +271,7 @@ public class DisplayController extends DatabaseController
 								rset.getString(7), ((OracleResultSet) rset).getBLOB(8), ((OracleResultSet) rset).getBLOB(9));
 		}
 		
+		stmt.close();
 		return p;
 	}
 
@@ -338,6 +359,8 @@ public class DisplayController extends DatabaseController
 			stmt.executeUpdate(sql2);
 			stmt.executeUpdate("COMMIT");
 		}
+		
+		stmt.close();
 	}
 
 }

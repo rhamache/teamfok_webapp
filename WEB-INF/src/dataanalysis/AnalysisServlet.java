@@ -83,6 +83,7 @@ public class AnalysisServlet extends HttpServlet
 		try {
 			rset = ac.dataAnalysis(filter, from, to, period);
 			rsmd = rset.getMetaData();
+			ac.close();
 		} catch (Exception e)
 		{
 			e.printStackTrace(response.getWriter());
