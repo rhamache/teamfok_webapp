@@ -141,6 +141,12 @@ public class SearchServlet extends HttpServlet
 		  			} catch (Exception e3)
 		  			{
 		  				out.println("Excep: "+e3.getMessage());
+		  				try {
+							sc.close();sbc.close();dc.close();
+						} catch (SQLException e) {
+							
+							e.printStackTrace();
+						}
 		  				return;
 		  			}
 
@@ -163,28 +169,40 @@ public class SearchServlet extends HttpServlet
 		  						e4.printStackTrace();
 		  					}
 		  			}
-		  			int page = Integer.parseInt(request.getQueryString());
-		  			html.appendHTML("<h1>Found Photos (10 per page)</h1>");
-	
 		  			
-		  			if ((!results.isEmpty())){
-		  				html.appendHTML("<h1>Found Photos (10 per page)</h1>");
-			  			html.appendHTML(dc.createHTML(results, page*10, user));
-		  				if ( (page) * 10 > 0)
-			  			{
-			  				html.appendHTML("<a href=\"display?"+(page-1)+"\">Previous Page</a>");
-			  			}
+		  			
+		  			
+		  			
+		  		
+		  			
+		  			if ((!results.isEmpty()))
+		  			{
+		  				int divAmount = results.size()/10;
+		  				html.appendHTML("<h1>Found Photos!</h1>");
+		  				int k = 0;
+		  				for (k = 0; k <= divAmount; k++){
+		  					html.appendHTML(dc.createHTML(results, k*10, user));
+		  				}
 			  			
-			  			if ( (page+1) * 10 < results.size())
-			  			{
-			  				html.appendHTML("<a href=\"display?"+(page+1)+"\">Next Page</a>");
-		  			}	else
-		  					html.appendHTML("No Matches");
 		  			}
+			  		else
+		  				html.appendHTML("<h1>No Matches</h1>");
+		  			
+		  			
+		  			
+		  			try {
+						dc.close();sc.close();sbc.close();
+					} catch (SQLException e) {
+
+						e.printStackTrace();
+					}
+		  				
+		  			
 		  			
 		  			
 		  			response.setContentType("text/html");
 		  			html.putInResponse(response);
+		  			
 			  }
 			  	
 }
