@@ -54,10 +54,24 @@ public class UploadController extends DatabaseController
 		return id;
 	}
 	
-	public void writeBlob(int id, ArrayList<String> bundle, InputStream instr) throws SQLException, IOException
+	public void writeBlob(int id, ArrayList<String> bundle, InputStream instr, int flag) throws SQLException, IOException
 	{
-	    BufferedImage img = ImageIO.read(instr);
+	    BufferedImage img = ImageIO.read(instr); 
 	    BufferedImage thumbNail = shrink(img);
+	    
+	    String type = ""; String type_query = "";
+	    if (flag == 0) 
+	    { 
+	    	type = "jpg"; 
+	    	type_query = "INSERT INTO imagetypes VALUES("+id+", 'jpg')";
+	    }
+	    else if (flag == 1) 
+	    { 
+	    	type = "gif";
+	    	type_query = "INSERT INTO imagetypes VALUES("+id+", 'gif')";
+	    }
+	    
+	    
 		
 		String sql = "INSERT INTO images VALUES("+id+", '" + bundle.get(0)+"', "+Integer.parseInt(bundle.get(1))+", '"+bundle.get(2)+"', '"+bundle.get(3)+"', sysdate, '"+bundle.get(4)+"',empty_blob(),empty_blob())";
 		String query = "SELECT * FROM images WHERE photo_id = "+id+" FOR UPDATE";
@@ -67,6 +81,7 @@ public class UploadController extends DatabaseController
 		stmt = conn.createStatement();
 		stmt.executeUpdate(sql);
 		stmt.executeUpdate(sql2);
+		stmt.executeUpdate(type_query);
 		stmt.executeUpdate("COMMIT");
 		rset = stmt.executeQuery(query);
 		rset.next();
@@ -74,16 +89,14 @@ public class UploadController extends DatabaseController
 		BLOB theblob = ((OracleResultSet)rset).getBLOB(8);
 
 	    OutputStream outstream = theblob.getBinaryOutputStream();
-	    ImageIO.write(thumbNail, "jpg", outstream);
+	    ImageIO.write(thumbNail, type, outstream);
         
 	    theblob = ((OracleResultSet)rset).getBLOB(9);
 	    
 	  	outstream = theblob.getBinaryOutputStream();
-	    ImageIO.write(img, "jpg", outstream);
+	    ImageIO.write(img, type, outstream);
 	    
 	    stmt.executeUpdate("COMMIT");
-	    
-	    stmt.close();
 	}
 
 	
@@ -136,9 +149,11 @@ public class UploadController extends DatabaseController
 		String sql = "DELETE FROM images WHERE photo_id = "+id;
 		String sql2 = "DELETE FROM hits WHERE photo_id = "+id;
 		String sql3 = "DELETE FROM hitcounts WHERE photo_id = "+id;
+		String sql4 = "DELETE FROM imagetypes WHERE photo_id = "+id;
 		Statement stmt = null; 
 		stmt = conn.createStatement();
 		
+		stmt.executeUpdate(sql4);
 		stmt.executeUpdate(sql3);
 		stmt.executeUpdate(sql2);
 		stmt.executeUpdate(sql);

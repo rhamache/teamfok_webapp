@@ -34,7 +34,6 @@ public class GroupsController extends DatabaseController
 			groupIds.put(rset.getInt(1), rset.getString(2));
 		}
 		
-		stmt.close();
 		return groupIds;
 	}
 

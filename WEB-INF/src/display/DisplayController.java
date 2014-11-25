@@ -52,8 +52,7 @@ public class DisplayController extends DatabaseController
 		
 		for (Integer i : permitted_groups)
 			photos.addAll(getGroupPhotos(i.intValue()));
-		
-		stmt.close();
+
 		return photos;
 	}
 	
@@ -72,8 +71,7 @@ public class DisplayController extends DatabaseController
 								rset.getString(4), rset.getString(5), rset.getDate(6), 
 								rset.getString(7), ((OracleResultSet) rset).getBLOB(8), ((OracleResultSet) rset).getBLOB(9)) );
 		}
-		
-		stmt.close();
+
 		return photos;
 		
 	}
@@ -95,7 +93,6 @@ public class DisplayController extends DatabaseController
 								rset.getString(7), ((OracleResultSet) rset).getBLOB(8), ((OracleResultSet) rset).getBLOB(9)) );
 		}
 		
-		stmt.close();
 		return photos;
 	}
 	
@@ -114,8 +111,7 @@ public class DisplayController extends DatabaseController
 								rset.getString(4), rset.getString(5), rset.getDate(6), 
 								rset.getString(7), ((OracleResultSet) rset).getBLOB(8), ((OracleResultSet) rset).getBLOB(9)) );
 		}
-		
-		stmt.close();
+
 		return photos;
 		
 	}
@@ -135,7 +131,6 @@ public class DisplayController extends DatabaseController
 								rset.getString(7), ((OracleResultSet) rset).getBLOB(8), ((OracleResultSet) rset).getBLOB(9)) );
 		}
 		
-		stmt.close();
 		return photos;
 		
 	}
@@ -250,8 +245,7 @@ public class DisplayController extends DatabaseController
 				photos.add(this.getPhoto(rset.getInt(1)));
 			
 		}
-		
-		stmt.close();
+
 		return photos;
 	}
 	
@@ -270,8 +264,7 @@ public class DisplayController extends DatabaseController
 								rset.getString(4), rset.getString(5), rset.getDate(6), 
 								rset.getString(7), ((OracleResultSet) rset).getBLOB(8), ((OracleResultSet) rset).getBLOB(9));
 		}
-		
-		stmt.close();
+
 		return p;
 	}
 
@@ -359,8 +352,29 @@ public class DisplayController extends DatabaseController
 			stmt.executeUpdate(sql2);
 			stmt.executeUpdate("COMMIT");
 		}
+	}
+
+	public int getImageType(int picid) throws SQLException
+	{
+		String query = "SELECT type FROM imagetypes WHERE photo_id = "+picid;
+		Statement stmt = null; ResultSet rset = null;
 		
-		stmt.close();
+		stmt = conn.createStatement();
+		rset = stmt.executeQuery(query);
+		
+		String type = "";
+		
+		while(rset != null && rset.next())
+		{
+			type = rset.getString(1);
+		}
+		
+		if (type.equals("jpg"))
+			return 0;
+		else if (type.equals("gif"))
+			return 1;
+		else
+			return -1;
 	}
 
 }

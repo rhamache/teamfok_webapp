@@ -99,7 +99,6 @@ public class SearchController extends DatabaseController
 		        	int prevrank = photo.getRank();
 		        	photo.setRank(prevrank+rank);
 		        }
-		        stmt.close();
 	        }
 			
 	    }

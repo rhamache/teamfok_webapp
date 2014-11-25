@@ -60,7 +60,7 @@ public class SecurityController extends DatabaseController
         	count = rset.getInt(1);
     	}
     	
-    	stmt.close();
+
     	if (count > 0)
     	{
     		return true;
@@ -84,8 +84,7 @@ public class SecurityController extends DatabaseController
 			groupIds.put(rset.getInt(1), rset.getString(2));
 		}
 		
-		
-		stmt.close();
+
 		return groupIds;
 	}
 	
@@ -116,9 +115,7 @@ public class SecurityController extends DatabaseController
 		stmt = conn.createStatement();
 		rset = stmt.executeQuery(query);
 		rset.next();
-		
-		
-		stmt.close();
+
 		return rset.getString(1);
 	}
 	
@@ -131,7 +128,6 @@ public class SecurityController extends DatabaseController
 		stmt.executeUpdate(sql);
 		stmt.executeUpdate("COMMIT");
 		
-		stmt.close();
 	}
 	
 	public boolean addMemberTo(String username, int group_id, String notice) throws SQLException
@@ -154,7 +150,6 @@ public class SecurityController extends DatabaseController
 		
 		stmt.executeUpdate(sql);
 		stmt.executeUpdate("COMMIT");
-		stmt.close();
 		return true;
 	}
 	
@@ -196,8 +191,6 @@ public class SecurityController extends DatabaseController
 		stmt.executeUpdate(sql);
 		stmt.executeUpdate(sql2);
 		stmt.executeUpdate("COMMIT");
-		
-		stmt.close();
 	}
 	
 	public void createGroup(String name, String owner) throws SQLException
@@ -229,8 +222,6 @@ public class SecurityController extends DatabaseController
 		stmt.executeUpdate(sql);
 		stmt.executeUpdate(sql2);
 		stmt.executeUpdate("COMMIT");
-		
-		stmt.close();
 	}
 	
 	public boolean userAllowedView(int permission, String username, String owner){
