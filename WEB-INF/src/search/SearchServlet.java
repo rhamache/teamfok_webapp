@@ -163,11 +163,25 @@ public class SearchServlet extends HttpServlet
 		  						e4.printStackTrace();
 		  					}
 		  			}
+		  			int page = Integer.parseInt(request.getQueryString());
+		  			html.appendHTML("<h1>Found Photos (10 per page)</h1>");
+	
 		  			
 		  			if ((!results.isEmpty())){
-		  					html.appendHTML(dc.createHTML(results,0,user));
+		  				html.appendHTML("<h1>Found Photos (10 per page)</h1>");
+			  			html.appendHTML(dc.createHTML(results, page*10, user));
+		  				if ( (page) * 10 > 0)
+			  			{
+			  				html.appendHTML("<a href=\"display?"+(page-1)+"\">Previous Page</a>");
+			  			}
+			  			
+			  			if ( (page+1) * 10 < results.size())
+			  			{
+			  				html.appendHTML("<a href=\"display?"+(page+1)+"\">Next Page</a>");
 		  			}	else
 		  					html.appendHTML("No Matches");
+		  			}
+		  			
 		  			
 		  			response.setContentType("text/html");
 		  			html.putInResponse(response);
