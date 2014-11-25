@@ -36,7 +36,6 @@ public class DatabaseController{
 	    stmt = conn.createStatement();
 	    rset = stmt.executeQuery(statement);
 	    
-	    stmt.close();
 		return rset;
     }
     

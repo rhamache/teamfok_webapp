@@ -118,6 +118,7 @@ public class HTMLBuilder
 	
 	public void putInResponse(HttpServletResponse res) throws IOException
 	{
+		res.setContentType("text/html");
 		PrintWriter out = res.getWriter();
 		out.println(bundle.getBuffer());
 	}

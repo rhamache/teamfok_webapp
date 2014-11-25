@@ -98,9 +98,12 @@ public class SearchController extends DatabaseController
 	        		photo.setDate(date);
 		        	int prevrank = photo.getRank();
 		        	photo.setRank(prevrank+rank);
-		        	}
 	        	}
 	        }
+
+		}
+
+
 		
 		
 		if (timebias.equals("Neither"))

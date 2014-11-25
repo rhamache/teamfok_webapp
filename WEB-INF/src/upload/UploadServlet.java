@@ -45,7 +45,9 @@ public class UploadServlet extends HttpServlet
 				udbc = new UploadController();
 			} catch (Exception e1)
 			{
-				e1.printStackTrace();
+				html.appendHTML(e1.getMessage());
+				html.putInResponse(response);
+				return;
 			} 
 	
 
@@ -106,7 +108,10 @@ public class UploadServlet extends HttpServlet
 			udbc = new UploadController();
 		} catch (Exception e)
 		{
-			e.printStackTrace();
+			html.appendHTML(e.getMessage());
+			html.makeFooter();
+			html.putInResponse(response);
+			return;
 		} 
 
 		try {
@@ -117,7 +122,8 @@ public class UploadServlet extends HttpServlet
 	    
 			// Process the uploaded items, assuming only 1 image file uploaded
 			Iterator i = FileItems.iterator();
-			InputStream instream = null;
+			ArrayList<InputStream> jpg_instreams = new ArrayList<InputStream>(0);
+			ArrayList<InputStream> gif_instreams = new ArrayList<InputStream>(0);
 			
 			
 			while (i.hasNext()) {
@@ -134,12 +140,19 @@ public class UploadServlet extends HttpServlet
 		        } else if (item.getFieldName().equals("FILEP"))
 		        {
 		        	if (!item.getString().isEmpty())
-		        		instream = item.getInputStream();
+		        	{
+		        		if (item.getContentType().equals("image/jpeg"))
+		        			jpg_instreams.add(item.getInputStream());
+		        		else if (item.getContentType().equals("image/gif"))
+		        			gif_instreams.add(item.getInputStream());
+		        		else
+		        			html.appendHTML("<h2>You selected one or more files that is of a unsupported type (jpg or gif only).</h2>");
+		        	}
 		        }
 
 		    }
 			
-			if (instream == null)
+			if (gif_instreams.size() == 0 && jpg_instreams.size() == 0)
 			{
 				html.buildFromFile(path);
 				html.appendHTML(udbc.createGroupSelector(request.getSession().getAttribute("username").toString()));
@@ -154,8 +167,7 @@ public class UploadServlet extends HttpServlet
 			if (place == null || place.equals("")) { place = "N/A"; }
 			if (description == null || description.equals("")) { description = "N/A"; }
 	    
-
-            pic_id = udbc.getPicId();
+		
        
             ArrayList<String> infoBundle = new ArrayList<String>();
             infoBundle.add(request.getSession().getAttribute("username").toString());
@@ -164,9 +176,23 @@ public class UploadServlet extends HttpServlet
             infoBundle.add(place);
             infoBundle.add(description);        
        
-            udbc.writeBlob(pic_id, infoBundle, instream);
+            for (InputStream in : jpg_instreams)
+            {
+            	pic_id = udbc.getPicId();
+            	
+            	udbc.writeBlob(pic_id, infoBundle, in, 0);
 
-	    	instream.close();
+	    		in.close();
+            }
+            
+            for (InputStream in : gif_instreams)
+            {
+            	pic_id = udbc.getPicId();
+            	
+            	udbc.writeBlob(pic_id, infoBundle, in, 1);
+
+	    		in.close();
+            }
 
 	    	
 	    	udbc.executeSQLTextStatement("commit");

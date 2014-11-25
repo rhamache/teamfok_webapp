@@ -21,15 +21,28 @@ public class DisplayOneServlet extends HttpServlet
 		String picid = request.getQueryString();
 
 		DisplayController dc = null;
-		response.setContentType("image/jpg");
 		
 		try
 		{
 			dc = new DisplayController();
+			int type_flag = 0;
+			
 			if ( picid.startsWith("tmb") )
+			{
+				type_flag = dc.getImageType(Integer.parseInt(picid.substring(3)));
+				
+				if (type_flag == 0) { response.setContentType("image/jpg"); }
+				else if (type_flag == 1) { response.setContentType("image/gif"); }
+				
 				dc.writeThumbnailImage(response.getWriter(), Integer.parseInt(picid.substring(3))); 
+			}
 			else
 			{
+				type_flag = dc.getImageType(Integer.parseInt(picid));
+				
+				if (type_flag == 0) { response.setContentType("image/jpg"); }
+				else if (type_flag == 1) { response.setContentType("image/gif"); }
+				
 				dc.writeImage(response.getWriter(), Integer.parseInt(picid));
 				dc.addHit(request.getSession().getAttribute("username").toString(), Integer.parseInt(picid));
 			}

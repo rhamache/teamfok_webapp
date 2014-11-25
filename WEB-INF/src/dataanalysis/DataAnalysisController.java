@@ -193,7 +193,7 @@ public class DataAnalysisController extends DatabaseController
     	stmt = conn.createStatement();
     	rset = stmt.executeQuery(query);
     	
-    	stmt.close();
+
 		return rset;
 		
 		
