@@ -27,6 +27,7 @@ public class HTMLBuilder
 	
 	public void makeHeader(){
 		pw.println("<!DOCTYPE html>" + "<html>");
+		pw.println("<head><link rel=\"stylesheet\" type=\"text/css\" href=\"html/css/style.css\"></head>");
 	}
 	
 	public void appendHTML(String text)
