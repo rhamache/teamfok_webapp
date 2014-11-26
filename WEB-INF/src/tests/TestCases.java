@@ -60,7 +60,7 @@ public class TestCases {
 		
 		try {
 			ac = new DataAnalysisController();
-			rset = ac.dataAnalysis("users", "03-MAR-1992", "24-NOV-2014", "weekly");
+			//rset = ac.dataAnalysis("users", "03-MAR-1992", "24-NOV-2014", "weekly");
 			rsmd = rset.getMetaData();
 		} catch (Exception e)
 		{

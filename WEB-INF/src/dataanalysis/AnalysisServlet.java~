@@ -100,14 +100,6 @@ public class AnalysisServlet extends HttpServlet
 		}
 		
 		
-		
-		if ((subject == null) && (user == null)){
-			html.appendHTML("No partition selected");
-			html.makeFooter();
-			html.putInResponse(response);
-			return;}
-		
-		
 		DataAnalysisController ac = null;
 		try
 		{

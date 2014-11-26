@@ -66,8 +66,8 @@ public class AnalysisServlet extends HttpServlet
 		String path = context.getRealPath("/html/analysis.html");
 		html.buildFromFile(path);
 		
-		String user = request.getParameter("user");
-		String subject = request.getParameter("subject");
+		String users = request.getParameter("user");
+		String subjects = request.getParameter("subject";
 		String from = request.getParameter("From");
 		String to = request.getParameter("To");
 		String period = request.getParameter("time-frame");
@@ -98,14 +98,6 @@ public class AnalysisServlet extends HttpServlet
 	  			return;
 				}
 		}
-		
-		
-		
-		if ((subject == null) && (user == null)){
-			html.appendHTML("No partition selected");
-			html.makeFooter();
-			html.putInResponse(response);
-			return;}
 		
 		
 		DataAnalysisController ac = null;
@@ -176,7 +168,7 @@ public class AnalysisServlet extends HttpServlet
 		} catch (SQLException e)
 		{
 			// TODO Auto-generated catch block
-			html.appendHTML("exeception when closing connection: "+e.getMessage());
+			html.appendHTML("exeception wehn closing connection: "+e.getMessage());
 		}
 		
 		

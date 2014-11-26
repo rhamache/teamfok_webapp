@@ -17,56 +17,51 @@ public class DataAnalysisController extends DatabaseController
 // TODO Auto-generated constructor stub
 	}
 	
-	public ResultSet dataAnalysis(String user, String subject, String from, String to, String period) throws SQLException
+	public ResultSet dataAnalysis(String user, String subject String from, String to, String period) throws SQLException
 	{
-		boolean subjects = (!(subject == null));
-		boolean users = (!(user == null));
+		boolean subject = subject.equals("subject");
+		boolean users = user.equals("user");
 		boolean yearly = period.equals("yearly");
 		boolean monthly = period.equals("monthly");
 		boolean weekly = period.equals("weekly");
 		boolean fromExists = !from.isEmpty();
 		boolean toExists = !to.isEmpty();
 
+		String userQuery = null;
+		String subjectQuery = null;
 		String query = null;
 		Statement stmt = null; ResultSet rset = null;
-		String partitionQuery = null;
-		String groupBy = null;
-	
+		
 
-		if (!subjects){
+		String partitionQuery = null;
+		if (!subject)
 			partitionQuery = "owner_name AS Username";
-			groupBy = " owner_name ";}
-		if (!users){
+		if (!user)
 			partitionQuery = "subject AS Subject";
-			groupBy = " subject ";
-			}
-		if (users && subjects){
+		if (user && subject)
 			partitionQuery = "owner_name AS Username, subject AS Subject ";
-			groupBy = " owner_name, subject ";}
-		
-		
 		if (yearly)
 				{
 					if (toExists && fromExists)
 					{
-						query = ("SELECT  EXTRACT(year from timing) AS Year, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
+						subjectQuery = ("SELECT  EXTRACT(year from timing) AS Year, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
 								"FROM images " +
 								"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
-								"GROUP BY EXTRACT(year from timing),"+groupBy+"" +
+								"GROUP BY EXTRACT(year from timing), subject " +
 								"ORDER BY EXTRACT(year from timing) ");
 					}
 					if (!fromExists){
-						query = ("SELECT  EXTRACT(year from timing) AS Year, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
+						subjectQuery = ("SELECT  EXTRACT(year from timing) AS Year, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
 								"FROM images " +
 								"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') " +
-								"GROUP BY EXTRACT(year from timing),"+groupBy+"" +
+								"GROUP BY EXTRACT(year from timing), subject " +
 								"ORDER BY EXTRACT(year from timing) ");
 					}
 					if (!toExists){
-						query = ("SELECT  EXTRACT(year from timing) AS Year, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
+						subjectQuery = ("SELECT  EXTRACT(year from timing) AS Year, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
 								"FROM images " +
 								"WHERE timing >= '"+from+"' " +
-								"GROUP BY EXTRACT(year from timing),"+groupBy+"" +
+								"GROUP BY EXTRACT(year from timing), subject " +
 								"ORDER BY EXTRACT(year from timing) ");
 					}
 				}
@@ -74,24 +69,24 @@ public class DataAnalysisController extends DatabaseController
 				{
 					if (toExists && fromExists)
 					{
-						query = ("SELECT EXTRACT(year from timing) AS Year, EXTRACT(month from timing) AS Month, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
+						subjectQuery = ("SELECT EXTRACT(year from timing) AS Year, EXTRACT(month from timing) AS Month, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
 								"FROM images " +
 								"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
-								"GROUP BY EXTRACT(year from timing), EXTRACT(month from timing),"+groupBy+"" +
+								"GROUP BY EXTRACT(year from timing), EXTRACT(month from timing), subject " +
 								"ORDER BY EXTRACT(year from timing) ");
 					}
 					if (!fromExists){
-						query = ("SELECT EXTRACT(year from timing) AS Year, EXTRACT(month from timing) AS Month, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
+						subjectQuery = ("SELECT EXTRACT(year from timing) AS Year, EXTRACT(month from timing) AS Month, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
 								"FROM images " +
 								"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') " +
-								"GROUP BY EXTRACT(year from timing), EXTRACT(month from timing),"+groupBy+"" +
+								"GROUP BY EXTRACT(year from timing), EXTRACT(month from timing), subject " +
 								"ORDER BY EXTRACT(year from timing) ");
 					}
 					if (!toExists){
-						query = ("SELECT EXTRACT(year from timing) AS Year, EXTRACT(month from timing) AS Month, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
+						subjectQuery = ("SELECT EXTRACT(year from timing) AS Year, EXTRACT(month from timing) AS Month, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
 								"FROM images " +
 								"WHERE timing >= '"+from+"' " +
-								"GROUP BY EXTRACT(year from timing), EXTRACT(month from timing),"+groupBy+"" +
+								"GROUP BY EXTRACT(year from timing), EXTRACT(month from timing), subject " +
 								"ORDER BY EXTRACT(year from timing) ");
 					}
 				}
@@ -99,28 +94,27 @@ public class DataAnalysisController extends DatabaseController
 				{
 					if (toExists && fromExists)
 					{
-						query = ("SELECT  EXTRACT(year from timing) AS Year, to_char(timing, 'IW') as WeekNo, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
+						subjectQuery = ("SELECT  EXTRACT(year from timing) AS Year, to_char(timing, 'IW') as WeekNo, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
 								"FROM images " +
 								"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') AND timing >= '"+from+"' " +
-								"GROUP BY EXTRACT(year from timing), to_char(timing, 'IW'),"+groupBy+"" +
+								"GROUP BY EXTRACT(year from timing), to_char(timing, 'IW'), subject " +
 								"ORDER BY EXTRACT(year from timing) ");
 					}
 					if (!fromExists){
-						query = ("SELECT  EXTRACT(year from timing) AS Year, to_char(timing, 'IW') as WeekNo, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
+						subjectQuery = ("SELECT  EXTRACT(year from timing) AS Year, to_char(timing, 'IW') as WeekNo, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
 								"FROM images " +
 								"WHERE timing <= to_date('"+to+" 11:59 P.M.', 'DD-MON-YYYY HH:MI P.M.') " +
-								"GROUP BY to_char(timing, 'IW'),"+groupBy+"" +
+								"GROUP BY to_char(timing, 'IW'), subject " +
 								"ORDER BY EXTRACT(year from timing) ");
 					}
 					if (!toExists){
-						query = ("SELECT  EXTRACT(year from timing) AS Year, to_char(timing, 'IW') as WeekNo, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
+						subjectQuery = ("SELECT  EXTRACT(year from timing) AS Year, to_char(timing, 'IW') as WeekNo, "+ partitionQuery+ " , COUNT(*) AS Imagecount " +
 								"FROM images " +
 								"WHERE timing >= '"+from+"' " +
-								"GROUP BY EXTRACT(year from timing), to_char(timing, 'IW'),"+groupBy+"" +
+								"GROUP BY EXTRACT(year from timing), to_char(timing, 'IW'), subject " +
 								"ORDER BY EXTRACT(year from timing) ");
 					}
-				}	
-	
+				}		
     	stmt = conn.createStatement();
     	rset = stmt.executeQuery(query);
     	
