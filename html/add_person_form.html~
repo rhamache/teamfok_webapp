@@ -1,0 +1,14 @@
+<FORM NAME="AddPersonToGroup"  METHOD="post" >
+<p>Add a person to this group:</p>
+<table>
+<TR VALIGN=TOP ALIGN=LEFT>
+<TD><B><I>Username:</I></B></TD>
+<td><INPUT TYPE="text" NAME="USER_TO_ADD" ></td>
+</tr>
+<TR VALIGN=TOP ALIGN=LEFT>
+<TD><B><I>Notice:</I></B></TD>
+<td><textarea name="NOTICE" rows="5" cols="24">Type a descriptive notice here...</textarea></td>
+<TR VALIGN=BOTTOM ALIGN=LEFT>
+<INPUT TYPE="submit" NAME="Submit" VALUE="Add user">
+</table>
+</FORM>

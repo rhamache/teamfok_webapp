@@ -63,6 +63,7 @@ public class HTMLBuilder
 		} else {
 			pw.println("<li><a href=\"/proj1/login.html\">Login</a></li>");
 		}
+		pw.println("<li><a href=\"/proj1/html/documentation/help.html\">Help</a></li>");
 		pw.println("</ul>");
 		pw.println("<hr>");
 	}

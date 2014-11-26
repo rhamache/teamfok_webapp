@@ -1,0 +1,22 @@
+
+<title> Search </title>
+<h1><b>Search Page</b></h1>
+<form action="search.html" method="POST">
+<h4>Keywords</h4>
+<textarea rows = 5 cols = 40 name="query" style="width: 300px; height: 200px; resize: none;" >
+</textarea>
+<br>
+Space-Seperated
+<br>
+<br>
+From: <input type="date" name="From">
+To: <input type= "date" name = "To">
+<p> format: (dd-MMM-yyyy) </p>
+<input type="radio" name="Timebias" value="Most-Recent" > Most-Recent
+<br>
+<input type="radio" name="Timebias" value="Least-Recent"> Least-Recent
+<br>
+<input type="radio" name="Timebias" value="Neither" checked > Neither
+<br>
+<input type = "submit" value = "execute" >
+</form>

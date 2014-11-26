@@ -1,0 +1,47 @@
+
+<link rel="stylesheet" type="text/css" href="upload_demo.css">
+<style>
+  	th{font-family: Helvetica}
+  	th{font-size: 13px};
+  	td{font-family: Helvetica}
+  	td{font-size: 13px};
+  	p{font-family: Helvetica}
+  	p{font-size: 13px};
+</style>
+</head>
+
+<body>
+<br><br>
+
+<div>
+<form name="upload-image" method="POST" enctype="multipart/form-data">
+<table>
+  <tr>
+    <th>File path: </th>
+    <td><input name="FILEP" type="file" multiple size="30" ></td>
+  </tr>
+  <tr>
+    <td ALIGN=left COLSPAN="2"><input type="submit" name=".submit" 
+     value="Upload"></td>
+  </tr>
+  <TR VALIGN=TOP ALIGN=CENTRE>
+	<TD><B>Subject:</B></TD>
+<TD><INPUT TYPE="text" NAME="SUB" VALUE=""><BR></TD>
+</TR>
+<TR VALIGN=TOP ALIGN=CENTRE>
+<TD><B>Place:</B></TD>
+<TD><INPUT TYPE="text" NAME="PLACE" VALUE=""></TD>
+</TR>
+<TR VALIGN=TOP ALIGN=CENTRE>
+<TD><B>Description:</B></TD>
+<TD><INPUT TYPE="text" NAME="DES" VALUE=""></TD>
+</TR>
+ </table>
+ </div>
+
+ <div>
+ <TR VALIGN=TOP ALIGN=CENTRE>
+ <p><B>Privacy:   </B>
+ <select name="GROUP">
+ <option value="1">Private</option>
+ <option value="2">Public</option>
