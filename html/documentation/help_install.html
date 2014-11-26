@@ -16,16 +16,11 @@
 	<li>In proj1/Setup you will find an SQL script (OurSetup.sql) that you must run on the oracle database. (Note: This combines the provided setup_2014.sql with our own modifications).
 	<ul>
 		<li>Option: we have provided you with a java program located in Setup/Populate.java that will populate the web app with test data. Compile and run this program to populate.</li>
-		<li>The Populate.java contains our own&nbsp;testing database credentials. Change the string values in the &quot;getConnected()&quot; method to your own oracle credentials.</li>
 	</ul>
 	</li>
+	<li>Our own database credentials are hard coded into the source code. To change the connection details you need to change lines 33-36 of Setup/Populate.java and lines 9-12 of WEB-INF/src/proj1/DatabaseController.java with your own JDBC configuration details, and then recompile those 2 files</li>
 	<li>Open a terimal and start Tomcat.</li>
 	<li>Open a web broswer. The webapp URL is your usual Tomcat URL with &quot;/proj1&quot; appended at the end.</li>
-	<li><strong><em>IMPORTANT NOTE: The proj1 folder shall not be renamed!! ***</em></strong></li>
 </ul>
 
 <p>&nbsp;</p>
-
-<ul>
-	<li><a href="help.html">Go back</a></li>
-</ul>
