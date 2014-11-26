@@ -31,7 +31,7 @@ public class Populate {
 	public static void getConnected() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException
 	{
 		final String Orc_Driver = "oracle.jdbc.driver.OracleDriver";
-	    final String Orc_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
+	    final String Orc_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:crs";
 	    final String Orc_Username = "hfok";
 	    final String Orc_Passwd = "43KBSQL5";
 	    Class drvClass = Class.forName(Orc_Driver); 
