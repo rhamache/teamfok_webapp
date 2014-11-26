@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -68,6 +71,33 @@ public class AnalysisServlet extends HttpServlet
 		String to = request.getParameter("To");
 		String period = request.getParameter("time-frame");
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+		Date dfrom = null, dto = null;
+		try
+		{
+				if (!from.isEmpty())
+					dfrom = sdf.parse(from);
+				if (!to.isEmpty())
+					dto = sdf.parse(to);
+		} catch (ParseException e)
+		{
+  			html.appendHTML("Date in incorrect format.");
+  			html.makeFooter();
+  			html.putInResponse(response);
+  			return;
+		}
+		
+		if (!to.isEmpty() && !from.isEmpty())
+			{
+				if (dfrom.compareTo(dto) > 0)
+				{
+	  			html.appendHTML("'From' date is after 'to' date.");
+	  			html.makeFooter();
+	  			html.putInResponse(response);
+	  			return;
+				}
+		}
+		
 		
 		DataAnalysisController ac = null;
 		try
@@ -83,13 +113,30 @@ public class AnalysisServlet extends HttpServlet
 		try {
 			rset = ac.dataAnalysis(filter, from, to, period);
 			rsmd = rset.getMetaData();
-			ac.close();
 		} catch (Exception e)
 		{
 			e.printStackTrace(response.getWriter());
+			return;
 		}
 		
-		int i = 1; String last_time_period = "";
+		int i = 1;
+		// print column headers first
+		try
+		{
+			html.appendHTML("<table border = \"1\">");
+			for(i = 1; i <= rsmd.getColumnCount(); i++)
+			{
+				if (i == 1) { html.appendHTML("<tr><td style = \"min-width:100px;height:50px;\">"+rsmd.getColumnName(i)+"</td>"); }
+				else { html.appendHTML("<td style = \"min-width:200px;\">"+rsmd.getColumnName(i)+"</td>"); }
+			}
+			html.appendHTML("</table>");
+		} catch (SQLException e)
+		{
+			html.appendHTML("rset exception: "+e.getMessage()+" index: "+i);
+		}
+		
+		
+		String last_time_period = "";
 		html.appendHTML("<table border = \"1\">");
 		try{
 			while (rset != null && rset.next())
@@ -113,6 +160,16 @@ public class AnalysisServlet extends HttpServlet
 		{
 			html.appendHTML("rset exception: "+e.getMessage()+" index: "+i);
 		}
+		
+		try
+		{
+			ac.close();
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			html.appendHTML("execpetion wehn closing connection: "+e.getMessage());
+		}
+		
 		
 		html.appendHTML("</tr></table>");
 		

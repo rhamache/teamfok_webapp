@@ -45,7 +45,6 @@ public class LoginServlet extends HttpServlet
 		  String passhash = "" + password.hashCode();
 		  PrintWriter out = response.getWriter();
 		  
-		  
 	      // Set response content type
 	      response.setContentType("text/html");
 	      

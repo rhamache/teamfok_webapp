@@ -9,7 +9,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import oracle.jdbc.OracleResultSet;
@@ -197,6 +199,66 @@ public class DisplayController extends DatabaseController
 		
 	}
 	
+	/** Copy of above method with no limit on amount to display
+	 * 
+	 * @param photos - list containing the photos you want to display
+	 * @param username - Currently logged in user
+	 * @return String containing valid HTML (must be but in HttpResponse via print writer or HTMLBuilder)
+	 */
+	public String createHTML(ArrayList<Photo> photos, String username)
+	{
+		StringWriter html = new StringWriter();
+		PrintWriter pw = new PrintWriter(html);
+		
+		int i;
+		pw.println("<table border =\"1\">");
+		for (i = 0; i < photos.size(); i++)
+		{
+			Photo p = photos.get(i);
+			int hits;
+			try
+			{
+				hits = getNumberOfHits(p.id);
+			} catch (SQLException e)
+			{
+				pw.println(e.getMessage());
+				return html.getBuffer().toString();
+			}
+			
+			String gname = "";
+			SecurityController sc = null;
+			try
+			{
+				sc = new SecurityController();
+				gname = sc.getGroupName(p.getPermitted());
+				sc.close();
+			} catch (Exception e)
+			{
+				e.printStackTrace(pw);
+			} 
+			
+            pw.println("<tr><td style = \"min-width:300px;height:300px\"><a href=\"/proj1/display/getpic?"+p.id+"\">");
+            pw.println("<img src=\"/proj1/display/getpic?tmb"+p.id +"\"></a></td>");
+            pw.println("<td style = \"min-width:600px;height:300px\"><p>");
+            pw.println("<b>Owner:</b> "+p.getOwnerName());
+            pw.println("<b>Subject:</b> "+p.getSubject());
+            pw.println("<b>Place:</b> "+p.getPlace());
+            pw.println("<b>Date:</b> "+p.getDate().toString());
+            pw.println("<b>Description:</b> "+p.getDescription());
+            pw.println("<b>Unique hits:</b> "+hits);
+            pw.println("<b>Group:</b> "+gname);
+            if (p.getOwnerName().equals(username))
+            {
+            	pw.println("<b><a href = \"/proj1/display/delete?"+p.id+"\">Delete</a></b> ");
+            }
+            pw.println("</p></td></tr>");
+		}
+		pw.println("</table>");
+		
+		return html.getBuffer().toString();
+		
+	}
+	
 	
 	public int getNumberOfHits(int id) throws SQLException
 	{
@@ -216,9 +278,9 @@ public class DisplayController extends DatabaseController
 		return hits;
 	}
 	
-	public ArrayList<Photo> getFiveMostPopularPhotos() throws SQLException
+	public ArrayList<Photo> getFiveMostPopularPhotos(String username) throws SQLException
 	{
-		ArrayList<Photo> photos = new ArrayList<Photo>();
+		ArrayList<Photo> photos = new ArrayList<Photo>(0);
 		
 		String query = "SELECT uniq_hits FROM hitcounts ORDER BY uniq_hits DESC";
 		Statement stmt = null; ResultSet rset = null;
@@ -228,25 +290,43 @@ public class DisplayController extends DatabaseController
 		
 		Set<Integer> pop_levels = new HashSet<Integer>();
 		
-		int count = 0;
-		while(rset != null && rset.next() && count < 5)
+		// copy over all hitcounts (in order)
+		while(rset != null && rset.next())
 		{
-			pop_levels.add( new Integer(rset.getInt(1)) );
-			count++;
+			pop_levels.add(rset.getInt(1));
 		}
 		
-		for (Integer pop_level: pop_levels)
+		SecurityController sc = null;
+		
+		try
 		{
-			String query2 = "SELECT photo_id FROM hitcounts WHERE uniq_hits = "+pop_level.toString();
-			
+			sc = new SecurityController();
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		} 
+
+		Iterator<Integer> it = pop_levels.iterator();
+		int pop_levels_added = 0;
+		while(pop_levels_added < 5 && it.hasNext())
+		{
+			String query2 = "SELECT photo_id FROM hitcounts WHERE uniq_hits = "+it.next();
 			rset = stmt.executeQuery(query2);
 			
 			while(rset != null && rset.next())
-				photos.add(this.getPhoto(rset.getInt(1)));
-			
+			{
+				if(sc.userAllowedView(username, rset.getInt(1)))
+				{
+					photos.add(this.getPhoto(rset.getInt(1)));
+					pop_levels_added++;
+				}
+			}
 		}
-
+		
+		Collections.reverse(photos);
 		return photos;
+
 	}
 	
 	public Photo getPhoto(int id) throws SQLException

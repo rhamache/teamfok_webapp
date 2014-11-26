@@ -65,14 +65,17 @@ public class DisplayServlet extends HttpServlet
 		
 		try
 		{
-			pop_photos = dc.getFiveMostPopularPhotos();
+			pop_photos = dc.getFiveMostPopularPhotos(request.getSession().getAttribute("username").toString());
 		} catch (SQLException e)
 		{
 			html.appendHTML(e.getMessage());
 		}
 		
-		html.appendHTML("<h1>Most Popular Photos</h1>");
-		html.appendHTML(dc.createHTML(pop_photos, 0, user));
+		if (page == 0)
+		{
+			html.appendHTML("<h1>Most Popular Photos</h1>");
+			html.appendHTML(dc.createHTML(pop_photos, user));
+		}
 		
 		
 		

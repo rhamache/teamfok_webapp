@@ -25,6 +25,7 @@ public class LoginController extends DatabaseController
 	    rset = stmt.executeQuery(query);
     	
         String truepwd = "";
+       
     	
     	while(rset != null && rset.next()) {
         	truepwd = (rset.getString(1)).trim();

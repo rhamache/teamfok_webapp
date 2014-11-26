@@ -228,7 +228,7 @@ public class SecurityController extends DatabaseController
 
 		if (permission == 1)
 			return true;
-		if (owner == username)
+		if (owner.equals(username))
 			return true;
 
 		List <String> members = null;
@@ -243,5 +243,34 @@ public class SecurityController extends DatabaseController
 		
 		return false;
 		
+	}
+	
+	/* another version of this method that takes only a username and photo_id */
+	public boolean userAllowedView(String user, int photo_id) throws SQLException{
+
+		String query = "SELECT permitted, owner_name FROM images WHERE photo_id = "+photo_id;
+		Statement stmt = null; ResultSet rset = null;
+		stmt = conn.createStatement();
+		
+		rset = stmt.executeQuery(query);
+		
+		int permission = 0; String owner = "";
+		if (rset.next())
+		{
+			permission = rset.getInt(1);
+			owner = rset.getString(2);
+		}
+		
+		if (permission == 1)
+			return true;
+		
+		if (permission == 2 && owner.equals(user))
+			return true;
+		
+		List<String> members = new ArrayList<String>(getMembersOf(permission));
+		if (members.contains(user))
+			return true;
+		
+		return false;
 	}
 }
