@@ -61,8 +61,18 @@ public class GroupCreationServlet extends HttpServlet
 		try
 		{
 			sc = new SecurityController();
-			if (gname != null)
+			if (!gname.isEmpty())
+			{
 				sc.createGroup(gname, request.getSession().getAttribute("username").toString());
+			}
+			else
+			{
+				html.appendHTML("Group name cannot be blank!");
+				html.appendHTML("<a href = \"/proj1/groups.html\">Go back</a>");
+				html.makeFooter();
+				html.putInResponse(response);
+				return;
+			}
 			sc.close();
 			
 		} catch (Exception e)

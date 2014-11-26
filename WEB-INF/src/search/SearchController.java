@@ -33,7 +33,7 @@ public class SearchController extends DatabaseController
 	{	if (keywords == null)
 				keywords = " ";
 		String[] keywordarr = keywords.toLowerCase().split(" ");
-		String[] photoargs  = {"owner_name","subject","place","description"};
+		String[] photoargs  = {"OWNER_NAME","SUBJECT","PLACE","DESCRIPTION"};
 		Set<Integer> photoIDarr =  new HashSet<Integer>();
 		ArrayList<Photo> photoList = new ArrayList<Photo>();
 		

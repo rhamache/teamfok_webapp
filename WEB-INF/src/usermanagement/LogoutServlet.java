@@ -21,15 +21,18 @@ public class LogoutServlet extends HttpServlet
 		      {
 		  			HTMLBuilder html = new HTMLBuilder();
 	  				html.makeHeader();
-	  				html.makeMenu(request.getSession());
 		  			
 		  			if(SecurityController.isLoggedIn(request.getSession()))
 		  			{
 		  				request.getSession().removeAttribute("username");
+		  				html.makeMenu(request.getSession());
 		  				html.makeBody("You have successfully logged out.");
 		  			} else {
+		  				html.makeMenu(request.getSession());
 		  				html.makeBody("Error: you are not logged in!");
 		  			}
+		  			
+		  			
 		  			
 		  			html.makeFooter();
 		  			

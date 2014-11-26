@@ -228,7 +228,7 @@ public class SecurityController extends DatabaseController
 
 		if (permission == 1)
 			return true;
-		if (owner.equals(username))
+		if (permission == 2 && owner.equals(username))
 			return true;
 
 		List <String> members = null;

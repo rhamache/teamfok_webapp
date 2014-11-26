@@ -152,18 +152,15 @@ public class SearchServlet extends HttpServlet
 
 		  			int i;
 		  			boolean allowed = false;
-		  			
-		  			ArrayList<Photo> good_photos = new ArrayList<Photo>();
 		  			for (i = 0; i < results.size(); i++)
 		  			{
 		  				try {
 		  						Photo photo = dc.getPhoto(results.get(i).id);
+		  						results.set(i, photo);
 		  						allowed = sc.userAllowedView(photo.getPermitted(), user, photo.getOwnerName());
+		  						if (!allowed)
+		  							results.remove(i);
 		  						
-		  						if (allowed)
-		  						{
-		  							good_photos.add(photo);
-		  						}
 		  						
 		  					}
 		  				
@@ -174,19 +171,19 @@ public class SearchServlet extends HttpServlet
 		  			}
 		  			
 		  			
+		  			
+		  			
 		  		
 		  			
 		  			if ((!results.isEmpty()))
 		  			{
-
+		  				int divAmount = results.size()/10;
 		  				html.appendHTML("<h1>Found Photos!</h1>");
-		  				
-		  				try
-		  				{	
-		  					html.appendHTML(dc.createHTML(good_photos,user));}
-		  				catch (Exception e){
-		  					e.printStackTrace(response.getWriter());
+		  				int k = 0;
+		  				for (k = 0; k <= divAmount; k++){
+		  					html.appendHTML(dc.createHTML(results, k*10, user));
 		  				}
+			  			
 		  			}
 			  		else
 		  				html.appendHTML("<h1>No Matches</h1>");
