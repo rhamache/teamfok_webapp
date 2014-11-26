@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import oracle.jdbc.OracleResultSet;
@@ -288,7 +289,7 @@ public class DisplayController extends DatabaseController
 		stmt = conn.createStatement();
 		rset = stmt.executeQuery(query);
 		
-		Set<Integer> pop_levels = new HashSet<Integer>();
+		Set<Integer> pop_levels = new LinkedHashSet<Integer>(); // Linked Hash Set preserves order
 		
 		// copy over all hitcounts (in order)
 		while(rset != null && rset.next())
@@ -314,17 +315,20 @@ public class DisplayController extends DatabaseController
 			String query2 = "SELECT photo_id FROM hitcounts WHERE uniq_hits = "+it.next();
 			rset = stmt.executeQuery(query2);
 			
+			boolean canView = false;
 			while(rset != null && rset.next())
 			{
 				if(sc.userAllowedView(username, rset.getInt(1)))
 				{
 					photos.add(this.getPhoto(rset.getInt(1)));
-					pop_levels_added++;
+					canView = true;
 				}
 			}
+			
+			if (canView)
+				pop_levels_added++;
 		}
 		
-		Collections.reverse(photos);
 		return photos;
 
 	}

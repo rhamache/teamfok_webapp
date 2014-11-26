@@ -118,20 +118,20 @@ public class SearchServlet extends HttpServlet
 		  			try {
 		  				sc = new SecurityController();
 		  				} 	catch (Exception e1) {
-		  					out.println("null");
+		  					out.println("Couldnt create SecurityController: "+e1.getMessage());
 		  					return;
 		  				} 
 		  			
 		  			try {
 		  				dc = new DisplayController();
 		  				} 	catch (Exception e1) {
-		  					out.println("null");
+		  					out.println("Couldnt create DisplayController: "+e1.getMessage());
 		  					return;
 		  				} 
 		  			try {
 		  				sbc = new SearchController();
 		  				}    catch (Exception e2) {
-		  					out.println("null");
+		  					out.println("Couldnt create SearchController: "+e2.getMessage());
 		  					return;
 		  				}
 		  			ArrayList<Photo> results = null;
