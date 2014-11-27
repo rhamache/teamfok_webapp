@@ -23,7 +23,7 @@ public class GroupsServlet extends HttpServlet
 	throws ServletException, IOException
 	{
 		HTMLBuilder html = new HTMLBuilder();
-		html.makeHeader("Groups Page");
+		html.makeHeader();
 		
 		if(SecurityController.isLoggedIn(request.getSession()))
 		{

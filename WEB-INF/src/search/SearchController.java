@@ -33,7 +33,7 @@ public class SearchController extends DatabaseController
 	{	if (keywords == null)
 				keywords = " ";
 		String[] keywordarr = keywords.toLowerCase().split(" ");
-		String[] photoargs  = {"OWNER_NAME","SUBJECT","PLACE","DESCRIPTION"};
+		String[] photoargs  = {"owner_name","subject","place","description"};
 		Set<Integer> photoIDarr =  new HashSet<Integer>();
 		ArrayList<Photo> photoList = new ArrayList<Photo>();
 		
@@ -65,10 +65,13 @@ public class SearchController extends DatabaseController
 	        			photoList.add(photo);
 	        		}
 	        	}
-		        for (Photo photo : photoList)
+	        	
+	        	int i;
+		        for (i = 0; i < photoList.size(); i++)
 		        	{	
+		        		Photo photo = photoList.get(i);
 		        		Integer rank = 0;
-		        		query = "select "+arg+" from IMAGES where  photo_id ='"+photo.id+"'"; //collect the argument from said photoID
+		        		query = "select "+arg+" from IMAGES where  photo_id = "+photo.id; //collect the argument from said photoID
 		        		stmt = conn.createStatement();
 		        		rset = stmt.executeQuery(query);
 		        		rset.next();
@@ -78,19 +81,20 @@ public class SearchController extends DatabaseController
 		        		int count = 0;
 		        		while (matcher.find()) 
 		        			count++;
+		        		
+		        		
 		        		if (arg.equals("subject"))
-		        			rank = 6*count;
-		        		else
 		        		{
-		        			if (arg.equals("place"))
-		        				rank = 3*count;
-		        			else
-	        					{
-	      						if (arg.equals("description"))
-	      							rank = count;
-	        					}
+		        			rank = 6*count;
 		        		}
-		        	query = "select timing from IMAGES where  photo_id ='"+photo.id+"'";
+		        		else if (arg.equals("place"))
+		        			rank = 3*count;
+		        		else if (arg.equals("description"))
+	      					rank = count;
+		        		else if (arg.equals("owner_name"))
+	      					rank = 0;
+		        		
+		        	query = "select timing from IMAGES where  photo_id = "+photo.id;
 	        		stmt = conn.createStatement();
 	        		rset = stmt.executeQuery(query);
 	        		rset.next();	
@@ -98,9 +102,12 @@ public class SearchController extends DatabaseController
 	        		photo.setDate(date);
 		        	int prevrank = photo.getRank();
 		        	photo.setRank(prevrank+rank);
+		        	
+		        	photoList.set(i, photo);
 		        	}
 	        	}
 	        }
+
 		
 		
 		if (timebias.equals("Neither"))

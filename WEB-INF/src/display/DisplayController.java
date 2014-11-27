@@ -424,13 +424,10 @@ public class DisplayController extends DatabaseController
 				count = rset.getInt(1);
 			}
 			String sql2;
-			if (count == 0)
-				sql2 = "INSERT INTO hitcounts VALUES("+picid+", 1)";
-			else
-			{
-				count++;
-				sql2 = "UPDATE hitcounts SET uniq_hits = "+count+" WHERE photo_id = "+picid;
-			}
+
+			count++;
+			sql2 = "UPDATE hitcounts SET uniq_hits = "+count+" WHERE photo_id = "+picid;
+			
 
 			stmt.executeUpdate(sql);
 			stmt.executeUpdate(sql2);

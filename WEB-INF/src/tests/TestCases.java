@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,7 +30,7 @@ public class TestCases {
 		
 		int total_tests = 9, tests_passed = 0;
 		
-		tests_passed += TestCases.TestDBC();
+		/*tests_passed += TestCases.TestDBC();
 		
 		tests_passed += TestCases.TestLoginPost();
 		
@@ -45,9 +46,47 @@ public class TestCases {
 		
 		tests_passed += TestCases.TestAddHit();
 		
-		tests_passed += TestCases.TestAnalysis();
+		tests_passed += TestCases.TestAnalysis();*/
+		
+		try
+		{
+			TestCases.TestSearch();
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		System.out.println("Tests passed: "+tests_passed+"/"+total_tests);
+	}
+	
+	public static int TestSearch() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException
+	{
+		SearchController sc = null;
+		sc = new SearchController();
+		
+		try
+		{
+			sc.SearchMain("xyz", "Neither", "", "");
+		} catch (ParseException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return 0;
 	}
 	
 	public static int TestAnalysis()
